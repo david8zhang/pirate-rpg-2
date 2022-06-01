@@ -11,6 +11,7 @@ export default class Preload extends Scene {
       'nextPage',
       'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/assets/images/arrow-down-left.png'
     )
+    this.load.image('npc', 'npc.png')
   }
 
   create() {

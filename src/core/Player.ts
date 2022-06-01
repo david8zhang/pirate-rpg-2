@@ -13,7 +13,7 @@ export interface PlayerConfig {
 }
 
 export class Player {
-  private sprite: Phaser.Physics.Arcade.Sprite
+  public sprite: Phaser.Physics.Arcade.Sprite
   private game: Game
   private updateList: any[] = []
 

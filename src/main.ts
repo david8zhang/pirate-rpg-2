@@ -3,11 +3,12 @@ import Phaser from 'phaser'
 import Game from './scenes/Game'
 import Preload from './scenes/Preload'
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin'
+import { Constants } from './utils/Constants'
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
-  width: 1200,
-  height: 900,
+  width: Constants.GAME_WIDTH,
+  height: Constants.GAME_HEIGHT,
   parent: 'phaser',
   physics: {
     default: 'arcade',

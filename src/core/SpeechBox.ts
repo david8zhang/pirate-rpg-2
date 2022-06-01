@@ -18,6 +18,8 @@ export class SpeechBox {
   public static COLOR_LIGHT = 0x7b5e57
   public static COLOR_DARK = 0x260e04
 
+  public isActive: boolean = true
+
   constructor(game: Game, config: SpeechBoxConfig) {
     this.game = game
     this.config = config
@@ -48,36 +50,50 @@ export class SpeechBox {
     this.textBox
       .setInteractive()
       .on('pointerdown', () => {
-        const icon = this.textBox.getElement('action') as any
-        icon!.setVisible(false)
-        this.textBox.resetChildVisibleState(icon)
-        if (this.textBox.isTyping) {
-          this.textBox.stop(true)
-        } else {
-          this.textBox.typeNextPage()
+        if (this.isActive) {
+          const icon = this.textBox.getElement('action') as any
+          icon!.setVisible(false)
+          this.textBox.resetChildVisibleState(icon)
+          if (this.textBox.isTyping) {
+            this.textBox.stop(true)
+          } else {
+            this.textBox.typeNextPage()
+          }
+          if (this.textBox.isLastPage) {
+            this.setVisible(false)
+          }
         }
       })
       .on('pageend', () => {
-        if (this.textBox.isLastPage) {
-          return
+        if (this.isActive) {
+          if (this.textBox.isLastPage) {
+            return
+          }
+          var icon = this.textBox.getElement('action') as any
+          icon!.setVisible(true)
+          this.textBox.resetChildVisibleState(icon)
+          icon.y -= 30
+          this.game.tweens.add({
+            targets: icon,
+            y: '+=30', // '+=100'
+            ease: 'Bounce', // 'Cubic', 'Elastic', 'Bounce', 'Back'
+            duration: 500,
+            repeat: 0, // -1: infinity
+            yoyo: false,
+          })
         }
-
-        var icon = this.textBox.getElement('action') as any
-        icon!.setVisible(true)
-        this.textBox.resetChildVisibleState(icon)
-        icon.y -= 30
-        this.game.tweens.add({
-          targets: icon,
-          y: '+=30', // '+=100'
-          ease: 'Bounce', // 'Cubic', 'Elastic', 'Bounce', 'Back'
-          duration: 500,
-          repeat: 0, // -1: infinity
-          yoyo: false,
-        })
       })
   }
 
+  setVisible(isVisible: boolean) {
+    this.textBox.setVisible(isVisible)
+    const icon = this.textBox.getElement('action') as any
+    icon.setVisible(isVisible)
+    this.isActive = isVisible
+  }
+
   displayText(content: string, typingSpeed: number) {
+    this.setVisible(true)
     this.textBox.start(content, typingSpeed)
   }
 
@@ -93,6 +109,10 @@ export class SpeechBox {
       },
       maxLines: 3,
     })
+  }
+
+  setPosition(x: number, y: number) {
+    this.textBox.setPosition(x, y)
   }
 
   getBuiltInText() {
