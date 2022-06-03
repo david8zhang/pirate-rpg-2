@@ -6,12 +6,19 @@ export default class Preload extends Scene {
   }
 
   preload() {
-    this.load.image('player', 'player.png')
+    // random icons
     this.load.image(
       'nextPage',
       'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/assets/images/arrow-down-left.png'
     )
-    this.load.image('npc', 'npc.png')
+
+    // Characters
+    this.load.image('player', 'character/player.png')
+    this.load.image('npc', 'character/npc.png')
+
+    // Tile maps
+    this.load.tilemapTiledJSON('map1', 'tiles/map1.json')
+    this.load.image('beach-tiles', 'tiles/beach-tiles.png')
   }
 
   create() {

@@ -22,6 +22,7 @@ export class Player {
     this.sprite = this.game.physics.add
       .sprite(config.position.x, config.position.y, 'player')
       .setScale(config.scale.x, config.scale.y)
+      .setDepth(1)
 
     const moveController = new MoveController(this.sprite, this.game)
     this.updateList.push(moveController)

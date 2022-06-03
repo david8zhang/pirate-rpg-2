@@ -7,8 +7,8 @@ import { Constants } from './utils/Constants'
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
-  width: Constants.GAME_WIDTH,
-  height: Constants.GAME_HEIGHT,
+  width: Constants.SCREEN_WIDTH,
+  height: Constants.SCREEN_HEIGHT,
   parent: 'phaser',
   physics: {
     default: 'arcade',
