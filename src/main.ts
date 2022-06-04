@@ -4,6 +4,7 @@ import Game from './scenes/Game'
 import Preload from './scenes/Preload'
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin'
 import { Constants } from './utils/Constants'
+import { GameUI } from './scenes/GameUI'
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -24,7 +25,7 @@ const config: Phaser.Types.Core.GameConfig = {
   scale: {
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
-  scene: [Preload, Game],
+  scene: [Preload, Game, GameUI],
   plugins: {
     scene: [
       {

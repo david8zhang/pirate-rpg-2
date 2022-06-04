@@ -1,4 +1,5 @@
 import Game from '~/scenes/Game'
+import { GameUI } from '~/scenes/GameUI'
 import { SpeechController } from './SpeechController'
 
 export interface NPCConfig {
@@ -10,6 +11,8 @@ export interface NPCConfig {
     x: number
     y: number
   }
+  texture: string
+  dialog: string
 }
 
 export class NPC {
@@ -19,11 +22,15 @@ export class NPC {
 
   constructor(game: Game, config: NPCConfig) {
     this.game = game
-    const { position, scale } = config
+    const { position, scale, dialog } = config
     this.sprite = this.game.physics.add
-      .sprite(position.x, position.y, 'npc')
+      .sprite(position.x, position.y, config.texture)
       .setScale(scale.x, scale.y)
-    const speechController = new SpeechController(this.game, this)
+    const speechController = new SpeechController(GameUI.instance, {
+      gameRef: this.game,
+      npc: this,
+      dialog,
+    })
     this.updateList.push(speechController)
   }
 

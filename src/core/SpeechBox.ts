@@ -1,5 +1,7 @@
+import { Scene } from 'phaser'
 import TextBox from 'phaser3-rex-plugins/templates/ui/textbox/TextBox'
 import Game from '~/scenes/Game'
+import { GameUI } from '~/scenes/GameUI'
 
 export interface SpeechBoxConfig {
   wrapWidth: number
@@ -10,7 +12,7 @@ export interface SpeechBoxConfig {
 }
 
 export class SpeechBox {
-  private game: Game
+  private uiScene: GameUI
   private config: SpeechBoxConfig
   private textBox: TextBox
 
@@ -20,18 +22,18 @@ export class SpeechBox {
 
   public isActive: boolean = true
 
-  constructor(game: Game, config: SpeechBoxConfig) {
-    this.game = game
+  constructor(uiScene: GameUI, config: SpeechBoxConfig) {
+    this.uiScene = uiScene
     this.config = config
 
     const { x, y } = config
-    this.textBox = this.game.rexUI.add
+    this.textBox = this.uiScene.rexUI.add
       .textBox({
         x,
         y,
         background: this.createSpeechBubbleShape(SpeechBox.COLOR_PRIMARY, SpeechBox.COLOR_LIGHT),
         text: this.getBBCodeText(),
-        action: this.game.add
+        action: this.uiScene.add
           .image(0, 0, 'nextPage')
           .setTint(SpeechBox.COLOR_LIGHT)
           .setVisible(false),
@@ -73,7 +75,7 @@ export class SpeechBox {
           icon!.setVisible(true)
           this.textBox.resetChildVisibleState(icon)
           icon.y -= 30
-          this.game.tweens.add({
+          this.uiScene.tweens.add({
             targets: icon,
             y: '+=30', // '+=100'
             ease: 'Bounce', // 'Cubic', 'Elastic', 'Bounce', 'Back'
@@ -99,7 +101,7 @@ export class SpeechBox {
 
   getBBCodeText() {
     const { wrapWidth, fixedWidth, fixedHeight } = this.config
-    return this.game.rexUI.add.BBCodeText(0, 0, '', {
+    return this.uiScene.rexUI.add.BBCodeText(0, 0, '', {
       fixedWidth,
       fixedHeight,
       fontSize: '20px',
@@ -117,7 +119,7 @@ export class SpeechBox {
 
   getBuiltInText() {
     const { wrapWidth, fixedWidth, fixedHeight } = this.config
-    return this.game.add
+    return this.uiScene.add
       .text(0, 0, '', {
         fontSize: '20px',
         wordWrap: {
@@ -129,7 +131,7 @@ export class SpeechBox {
   }
 
   createSpeechBubbleShape(fillColor, strokeColor) {
-    return this.game.rexUI.add.customShapes({
+    return this.uiScene.rexUI.add.customShapes({
       create: { lines: 1 },
       update: function () {
         var radius = 20

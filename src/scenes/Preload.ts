@@ -22,6 +22,7 @@ export default class Preload extends Scene {
   }
 
   create() {
+    this.scene.start('ui')
     this.scene.start('game')
   }
 }

@@ -8,7 +8,6 @@ import { Constants } from '~/utils/Constants'
 
 export default class Game extends Phaser.Scene {
   public player!: Player
-  public rexUI!: RexUIPlugin
   public map!: Map
 
   constructor() {
