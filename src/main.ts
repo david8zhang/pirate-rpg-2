@@ -3,6 +3,7 @@ import Phaser from 'phaser'
 import Game from './scenes/Game'
 import Preload from './scenes/Preload'
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin'
+import AnimatedTiles from 'phaser-animated-tiles/dist/AnimatedTiles'
 import { Constants } from './utils/Constants'
 import { GameUI } from './scenes/GameUI'
 
@@ -21,7 +22,7 @@ const config: Phaser.Types.Core.GameConfig = {
   dom: {
     createContainer: true,
   },
-  // pixelArt: true,
+  pixelArt: true,
   scale: {
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },

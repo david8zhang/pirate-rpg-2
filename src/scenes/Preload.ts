@@ -17,8 +17,8 @@ export default class Preload extends Scene {
     this.load.image('npc', 'character/npc.png')
 
     // Tile maps
-    this.load.tilemapTiledJSON('map1', 'tiles/map1.json')
-    this.load.image('beach-tiles', 'tiles/beach-tiles.png')
+    this.load.tilemapTiledJSON('map4', 'tiles/map4.json')
+    this.load.image('animated_test_2', 'tiles/animated_test_2.png')
   }
 
   create() {

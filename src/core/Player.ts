@@ -10,6 +10,7 @@ export interface PlayerConfig {
     x: number
     y: number
   }
+  layersToCollideWith?: string[]
 }
 
 export class Player {
@@ -23,9 +24,21 @@ export class Player {
       .sprite(config.position.x, config.position.y, 'player')
       .setScale(config.scale.x, config.scale.y)
       .setDepth(1)
+    this.game.physics.world.enableBody(this.sprite, Phaser.Physics.Arcade.DYNAMIC_BODY)
 
     const moveController = new MoveController(this.sprite, this.game)
     this.updateList.push(moveController)
+
+    if (config.layersToCollideWith) {
+      this.setupTilemapCollision(config.layersToCollideWith)
+    }
+  }
+
+  setupTilemapCollision(layersToCollideWith: string[]) {
+    layersToCollideWith.forEach((layer: string) => {
+      const layerToCollideWith = this.game.map.getLayer(layer)
+      this.game.physics.add.collider(layerToCollideWith, this.sprite)
+    })
   }
 
   update() {

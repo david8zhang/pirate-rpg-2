@@ -15,6 +15,9 @@ interface MapConfig {
 export class Map {
   private game: Game
   private tileMap!: Phaser.Tilemaps.Tilemap
+  private layerMappings: {
+    [layerName: string]: Phaser.Tilemaps.TilemapLayer
+  } = {}
 
   constructor(game: Game, mapConfig: MapConfig) {
     this.game = game
@@ -26,9 +29,16 @@ export class Map {
     this.tileMap = this.game.make.tilemap({
       key: mapConfig.tileMapKey,
     })
-    const tileset = this.tileMap.addTilesetImage('beach-tiles', 'beach-tiles')
-    this.tileMap.createLayer('Ocean', tileset).setScale(Constants.LAYER_SCALE)
-    this.tileMap.createLayer('Sand', tileset).setScale(Constants.LAYER_SCALE)
+    const tileset = this.tileMap.addTilesetImage('animated_test_2', 'animated_test_2')
+    this.createLayer('Ocean', tileset)
+    this.createLayer('Sand', tileset)
+    this.game.animatedTiles.init(this.tileMap)
+  }
+
+  createLayer(layerName: string, tileset) {
+    const layer = this.tileMap.createLayer(layerName, tileset).setScale(Constants.LAYER_SCALE)
+    layer.setCollisionByExclusion([-1])
+    this.layerMappings[layerName] = layer
   }
 
   initNPCs(mapConfig: MapConfig, tileMap: Phaser.Tilemaps.Tilemap) {
@@ -48,5 +58,9 @@ export class Map {
         dialog: npcConfig.dialog,
       })
     })
+  }
+
+  public getLayer(name: string) {
+    return this.layerMappings[name]
   }
 }

@@ -1,30 +1,34 @@
 import Phaser from 'phaser'
 import { Player } from '~/core/Player'
-import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin'
-import { SpeechBox } from '~/core/SpeechBox'
-import { NPC } from '~/core/NPC'
 import { Map } from '~/core/Map'
 import { Constants } from '~/utils/Constants'
 
 export default class Game extends Phaser.Scene {
   public player!: Player
   public map!: Map
+  public animatedTiles: any
 
   constructor() {
     super('game')
   }
 
+  preload() {
+    this.load.scenePlugin(
+      'AnimatedTiles',
+      'https://raw.githubusercontent.com/nkholski/phaser-animated-tiles/master/dist/AnimatedTiles.js',
+      'animatedTiles',
+      'animatedTiles'
+    )
+  }
+
   create() {
-    this.player = new Player(this, {
-      position: { x: 100, y: 100 },
-      scale: { x: 0.3, y: 0.3 },
-    })
+    this.initTilemap()
+    this.initPlayer()
+  }
 
-    this.cameras.main.startFollow(this.player.sprite, true)
-    this.cameras.main.setBounds(0, 0, Constants.GAME_WIDTH, Constants.GAME_HEIGHT)
-
+  initTilemap() {
     this.map = new Map(this, {
-      tileMapKey: 'map1',
+      tileMapKey: 'map4',
       npcConfig: {
         John: {
           dialog: 'Hello world!',
@@ -32,6 +36,16 @@ export default class Game extends Phaser.Scene {
         },
       },
     })
+  }
+
+  initPlayer() {
+    this.player = new Player(this, {
+      position: { x: 100, y: 100 },
+      scale: { x: 0.3, y: 0.3 },
+      layersToCollideWith: ['Ocean'],
+    })
+    this.cameras.main.startFollow(this.player.sprite, true)
+    this.cameras.main.setBounds(0, 0, Constants.GAME_WIDTH, Constants.GAME_HEIGHT)
   }
 
   update() {
