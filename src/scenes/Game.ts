@@ -28,7 +28,7 @@ export default class Game extends Phaser.Scene {
 
   initTilemap() {
     this.map = new Map(this, {
-      tileMapKey: 'map4',
+      tileMapKey: 'intro-island',
       npcConfig: {
         John: {
           dialog: 'Hello world!',
@@ -39,13 +39,22 @@ export default class Game extends Phaser.Scene {
   }
 
   initPlayer() {
-    this.player = new Player(this, {
-      position: { x: 100, y: 100 },
-      scale: { x: 0.3, y: 0.3 },
-      layersToCollideWith: ['Ocean'],
-    })
-    this.cameras.main.startFollow(this.player.sprite, true)
-    this.cameras.main.setBounds(0, 0, Constants.GAME_WIDTH, Constants.GAME_HEIGHT)
+    if (this.map) {
+      const spawnLayer = this.map.tileMap.getObjectLayer('Spawn')
+      const spawnPoint = spawnLayer.objects.find((object) => object.name === 'spawn-point')
+      if (spawnPoint) {
+        this.player = new Player(this, {
+          position: {
+            x: spawnPoint.x as number,
+            y: spawnPoint.y as number,
+          },
+          scale: { x: 0.3, y: 0.3 },
+          layersToCollideWith: ['Ocean'],
+        })
+        this.cameras.main.startFollow(this.player.sprite, true)
+        this.cameras.main.setBounds(0, 0, Constants.GAME_WIDTH, Constants.GAME_HEIGHT)
+      }
+    }
   }
 
   update() {

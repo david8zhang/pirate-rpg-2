@@ -14,7 +14,7 @@ interface MapConfig {
 
 export class Map {
   private game: Game
-  private tileMap!: Phaser.Tilemaps.Tilemap
+  public tileMap!: Phaser.Tilemaps.Tilemap
   private layerMappings: {
     [layerName: string]: Phaser.Tilemaps.TilemapLayer
   } = {}
@@ -22,16 +22,17 @@ export class Map {
   constructor(game: Game, mapConfig: MapConfig) {
     this.game = game
     this.initTilemap(mapConfig)
-    this.initNPCs(mapConfig, this.tileMap)
+    this.initNPCs(mapConfig)
   }
 
   initTilemap(mapConfig: MapConfig) {
     this.tileMap = this.game.make.tilemap({
       key: mapConfig.tileMapKey,
     })
-    const tileset = this.tileMap.addTilesetImage('animated_test_2', 'animated_test_2')
+    const tileset = this.tileMap.addTilesetImage('pirate-rpg-tiles', 'pirate-rpg-tiles')
     this.createLayer('Ocean', tileset)
     this.createLayer('Sand', tileset)
+    this.createLayer('Grass', tileset)
     this.game.animatedTiles.init(this.tileMap)
   }
 
@@ -41,23 +42,25 @@ export class Map {
     this.layerMappings[layerName] = layer
   }
 
-  initNPCs(mapConfig: MapConfig, tileMap: Phaser.Tilemaps.Tilemap) {
+  initNPCs(mapConfig: MapConfig) {
     const npcLayer = this.tileMap.getObjectLayer('NPC')
-    npcLayer.objects.forEach((layerConfig) => {
-      const npcConfig = mapConfig.npcConfig[layerConfig.name]
-      const npc = new NPC(this.game, {
-        position: {
-          x: (layerConfig.x as number) * Constants.LAYER_SCALE,
-          y: (layerConfig.y as number) * Constants.LAYER_SCALE,
-        },
-        scale: {
-          x: 0.3,
-          y: 0.3,
-        },
-        texture: npcConfig.texture,
-        dialog: npcConfig.dialog,
+    if (npcLayer) {
+      npcLayer.objects.forEach((layerConfig) => {
+        const npcConfig = mapConfig.npcConfig[layerConfig.name]
+        const npc = new NPC(this.game, {
+          position: {
+            x: (layerConfig.x as number) * Constants.LAYER_SCALE,
+            y: (layerConfig.y as number) * Constants.LAYER_SCALE,
+          },
+          scale: {
+            x: 0.3,
+            y: 0.3,
+          },
+          texture: npcConfig.texture,
+          dialog: npcConfig.dialog,
+        })
       })
-    })
+    }
   }
 
   public getLayer(name: string) {
