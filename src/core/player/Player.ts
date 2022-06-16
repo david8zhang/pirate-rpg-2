@@ -58,6 +58,7 @@ export class Player {
     layersToCollideWith.forEach((layer: string) => {
       const layerToCollideWith = this.game.map.getLayer(layer)
       this.game.physics.add.collider(layerToCollideWith, this.baseSprite)
+      this.game.physics.add.collider(layerToCollideWith, this.armsSprite)
     })
   }
 
