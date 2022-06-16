@@ -2,7 +2,7 @@ import Game from '~/scenes/Game'
 import { Constants } from '~/utils/Constants'
 
 export class MoveController {
-  private sprite: Phaser.Physics.Arcade.Sprite
+  private sprites: Phaser.Physics.Arcade.Sprite[]
   private game: Game
 
   // WASD movement
@@ -11,8 +11,8 @@ export class MoveController {
   private keyS!: Phaser.Input.Keyboard.Key
   private keyD!: Phaser.Input.Keyboard.Key
 
-  constructor(sprite: Phaser.Physics.Arcade.Sprite, game: Game) {
-    this.sprite = sprite
+  constructor(sprites: Phaser.Physics.Arcade.Sprite[], game: Game) {
+    this.sprites = sprites
     this.game = game
     this.setupKeyboardKeys()
   }
@@ -40,18 +40,26 @@ export class MoveController {
       if (leftDown && rightDown) {
         velocityX = 0
       }
-      this.sprite.setVelocityX(velocityX)
+      this.sprites.forEach((sprite) => {
+        sprite.setVelocityX(velocityX)
+      })
     } else {
-      this.sprite.setVelocityX(0)
+      this.sprites.forEach((sprite) => {
+        sprite.setVelocityX(0)
+      })
     }
     if (upDown || downDown) {
       let velocityY = upDown ? -speed : speed
       if (upDown && downDown) {
         velocityY = 0
       }
-      this.sprite.setVelocityY(velocityY)
+      this.sprites.forEach((sprite) => {
+        sprite.setVelocityY(velocityY)
+      })
     } else {
-      this.sprite.setVelocityY(0)
+      this.sprites.forEach((sprite) => {
+        sprite.setVelocityY(0)
+      })
     }
   }
 

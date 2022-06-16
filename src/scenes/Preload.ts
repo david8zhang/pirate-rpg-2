@@ -17,8 +17,19 @@ export default class Preload extends Scene {
     this.load.image('pirate-rpg-tiles', 'tiles/pirate-rpg-tiles.png')
 
     // Characters
-    this.load.image('player', 'character/player.png')
     this.load.image('npc', 'character/npc.png')
+
+    // Main character animations
+    this.load.atlas(
+      'player-base',
+      'character/animations/base.png',
+      'character/animations/base.json'
+    )
+    this.load.atlas(
+      'player-arms',
+      'character/animations/base-arms.png',
+      'character/animations/base-arms.json'
+    )
   }
 
   create() {

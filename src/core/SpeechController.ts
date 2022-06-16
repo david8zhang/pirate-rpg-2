@@ -47,7 +47,7 @@ export class SpeechController {
 
   handleChatboxOpen() {
     const positionToPlayer = Phaser.Math.Distance.BetweenPoints(
-      new Phaser.Math.Vector2(this.game.player.sprite.x, this.game.player.sprite.y),
+      new Phaser.Math.Vector2(this.game.player.baseSprite.x, this.game.player.baseSprite.y),
       new Phaser.Math.Vector2(this.npc.sprite.x, this.npc.sprite.y)
     )
     if (positionToPlayer < Constants.NPC_CHAT_THRESHOLD) {

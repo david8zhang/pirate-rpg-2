@@ -1,7 +1,8 @@
 import Phaser from 'phaser'
-import { Player } from '~/core/Player'
+import { Player } from '../core/player/Player'
 import { Map } from '~/core/Map'
 import { Constants } from '~/utils/Constants'
+import { createPlayerAnims } from '~/anims/PlayerAnims'
 
 export default class Game extends Phaser.Scene {
   public player!: Player
@@ -22,6 +23,7 @@ export default class Game extends Phaser.Scene {
   }
 
   create() {
+    createPlayerAnims(this.anims)
     this.initTilemap()
     this.initPlayer()
   }
@@ -48,10 +50,10 @@ export default class Game extends Phaser.Scene {
             x: spawnPoint.x as number,
             y: spawnPoint.y as number,
           },
-          scale: { x: 0.3, y: 0.3 },
+          scale: { x: 2, y: 2 },
           layersToCollideWith: ['Ocean'],
         })
-        this.cameras.main.startFollow(this.player.sprite, true)
+        this.cameras.main.startFollow(this.player.baseSprite, true)
         this.cameras.main.setBounds(0, 0, Constants.GAME_WIDTH, Constants.GAME_HEIGHT)
       }
     }
@@ -59,5 +61,23 @@ export default class Game extends Phaser.Scene {
 
   update() {
     this.player.update()
+    this.depthSort()
+  }
+
+  depthSort() {
+    const sortedByY = this.sys.displayList
+      .getChildren()
+      .filter((child: any) => {
+        return child.y
+      })
+      .sort((a: any, b: any) => {
+        return a.y - b.y
+      })
+    let lowestLayer = 1
+    sortedByY.forEach((c: any, index: number) => {
+      if (c.setDepth) {
+        c.setDepth(lowestLayer + index)
+      }
+    })
   }
 }

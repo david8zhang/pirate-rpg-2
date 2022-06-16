@@ -18,6 +18,7 @@ export class Map {
   private layerMappings: {
     [layerName: string]: Phaser.Tilemaps.TilemapLayer
   } = {}
+  public npcs: NPC[] = []
 
   constructor(game: Game, mapConfig: MapConfig) {
     this.game = game
@@ -59,6 +60,7 @@ export class Map {
           texture: npcConfig.texture,
           dialog: npcConfig.dialog,
         })
+        this.npcs.push(npc)
       })
     }
   }
