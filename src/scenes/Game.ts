@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 import { Player } from '../core/player/Player'
 import { Map } from '~/core/Map'
 import { Constants } from '~/utils/Constants'
-import { createPlayerAnims } from '~/anims/PlayerAnims'
+import { createPlayerArmsAnims, createPlayerBaseAnims } from '~/anims/PlayerAnims'
 
 export default class Game extends Phaser.Scene {
   public player!: Player
@@ -23,7 +23,8 @@ export default class Game extends Phaser.Scene {
   }
 
   create() {
-    createPlayerAnims(this.anims)
+    createPlayerBaseAnims(this.anims)
+    createPlayerArmsAnims(this.anims)
     this.initTilemap()
     this.initPlayer()
   }
