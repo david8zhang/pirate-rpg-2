@@ -1,3 +1,5 @@
+import { Direction } from '~/core/MoveController'
+
 export class Constants {
   public static PLAYER_SPEED = 200
   public static SCREEN_WIDTH = 1200
@@ -12,4 +14,19 @@ export class Constants {
   public static GAME_HEIGHT = Constants.TILE_SIZE * Constants.MAP_HEIGHT * Constants.LAYER_SCALE
 
   public static NPC_CHAT_THRESHOLD = 100
+
+  public static getAnimationDirection(direction: Direction) {
+    switch (direction) {
+      case Direction.LEFT:
+      case Direction.RIGHT: {
+        return 'side'
+      }
+      case Direction.UP: {
+        return 'back'
+      }
+      case Direction.DOWN: {
+        return 'front'
+      }
+    }
+  }
 }

@@ -10,7 +10,7 @@ export const createPlayerBaseAnims = (anims: Phaser.Animations.AnimationManager)
       suffix: '.png',
     }),
     repeat: -1,
-    frameRate: 10,
+    frameRate: 8,
   })
 
   anims.create({
@@ -21,7 +21,7 @@ export const createPlayerBaseAnims = (anims: Phaser.Animations.AnimationManager)
       suffix: '.png',
     }),
     repeat: -1,
-    frameRate: 10,
+    frameRate: 8,
   })
 
   anims.create({
@@ -32,7 +32,7 @@ export const createPlayerBaseAnims = (anims: Phaser.Animations.AnimationManager)
       suffix: '.png',
     }),
     repeat: -1,
-    frameRate: 10,
+    frameRate: 8,
   })
 
   // Walk animations
@@ -137,7 +137,7 @@ export const createPlayerArmsAnims = (anims: Phaser.Animations.AnimationManager)
       suffix: '.png',
     }),
     repeat: -1,
-    frameRate: 10,
+    frameRate: 8,
   })
 
   anims.create({
@@ -148,7 +148,7 @@ export const createPlayerArmsAnims = (anims: Phaser.Animations.AnimationManager)
       suffix: '.png',
     }),
     repeat: -1,
-    frameRate: 10,
+    frameRate: 8,
   })
 
   anims.create({
@@ -159,7 +159,7 @@ export const createPlayerArmsAnims = (anims: Phaser.Animations.AnimationManager)
       suffix: '.png',
     }),
     repeat: -1,
-    frameRate: 10,
+    frameRate: 8,
   })
 
   // Walk animations

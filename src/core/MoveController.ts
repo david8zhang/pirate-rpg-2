@@ -1,6 +1,13 @@
 import Game from '~/scenes/Game'
 import { Constants } from '~/utils/Constants'
 
+export enum Direction {
+  RIGHT = 'RIGHT',
+  LEFT = 'LEFT',
+  DOWN = 'DOWN',
+  UP = 'UP',
+}
+
 export class MoveController {
   private sprites: Phaser.Physics.Arcade.Sprite[]
   private game: Game
@@ -10,6 +17,9 @@ export class MoveController {
   private keyA!: Phaser.Input.Keyboard.Key
   private keyS!: Phaser.Input.Keyboard.Key
   private keyD!: Phaser.Input.Keyboard.Key
+
+  // Direction that the player is currently facing
+  public currDirection: Direction | null = null
 
   constructor(sprites: Phaser.Physics.Arcade.Sprite[], game: Game) {
     this.sprites = sprites
@@ -45,11 +55,13 @@ export class MoveController {
     const speed = Constants.PLAYER_SPEED
     if (leftDown || rightDown) {
       let velocityX = leftDown ? -speed : speed
+      this.currDirection = leftDown ? Direction.LEFT : Direction.RIGHT
       if (leftDown && rightDown) {
         velocityX = 0
       }
       this.sprites.forEach((sprite) => {
         sprite.setVelocityX(velocityX)
+        sprite.setFlipX(leftDown)
       })
     } else {
       this.sprites.forEach((sprite) => {
@@ -58,6 +70,7 @@ export class MoveController {
     }
     if (upDown || downDown) {
       let velocityY = upDown ? -speed : speed
+      this.currDirection = upDown ? Direction.UP : Direction.DOWN
       if (upDown && downDown) {
         velocityY = 0
       }
