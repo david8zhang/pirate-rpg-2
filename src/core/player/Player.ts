@@ -2,6 +2,7 @@ import Game from '~/scenes/Game'
 import { MoveController } from '../MoveController'
 import { StateMachine } from '../StateMachine'
 import { IdleState } from './states/IdleState'
+import { MoveState } from './states/MoveState'
 
 export interface PlayerConfig {
   position: {
@@ -22,6 +23,7 @@ export class Player {
   private game: Game
   private updateList: any[] = []
   public stateMachine: StateMachine
+  public moveController: MoveController
 
   constructor(game: Game, config: PlayerConfig) {
     this.game = game
@@ -39,8 +41,7 @@ export class Player {
       .setDepth(this.baseSprite.depth + 1)
     this.game.physics.world.enableBody(this.armsSprite, Phaser.Physics.Arcade.DYNAMIC_BODY)
 
-    const moveController = new MoveController([this.baseSprite, this.armsSprite], this.game)
-    this.updateList.push(moveController)
+    this.moveController = new MoveController([this.baseSprite, this.armsSprite], this.game)
 
     if (config.layersToCollideWith) {
       this.setupTilemapCollision(config.layersToCollideWith)
@@ -49,6 +50,7 @@ export class Player {
       'idle',
       {
         idle: new IdleState(),
+        move: new MoveState(),
       },
       [this]
     )

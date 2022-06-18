@@ -24,6 +24,14 @@ export class MoveController {
     this.keyD = this.game.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
   }
 
+  detectMovement() {
+    const leftDown = this.keyA.isDown
+    const rightDown = this.keyD.isDown
+    const upDown = this.keyW.isDown
+    const downDown = this.keyS.isDown
+    return leftDown || rightDown || upDown || downDown
+  }
+
   handlePlayerMovement() {
     if (!this.keyA || !this.keyD || !this.keyW || !this.keyS) {
       return
