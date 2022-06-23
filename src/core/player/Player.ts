@@ -1,5 +1,5 @@
 import Game from '~/scenes/Game'
-import { MoveController } from '../MoveController'
+import { MoveController } from './MoveController'
 import { StateMachine } from '../StateMachine'
 import { IdleState } from './states/IdleState'
 import { MoveState } from './states/MoveState'
@@ -34,7 +34,6 @@ export class Player {
       .setScale(config.scale.x, config.scale.y)
       .setDepth(1)
     this.game.physics.world.enableBody(this.baseSprite, Phaser.Physics.Arcade.DYNAMIC_BODY)
-
     this.armsSprite = this.game.physics.add
       .sprite(config.position.x, config.position.y, 'player-arms')
       .setScale(config.scale.x, config.scale.y)
@@ -69,5 +68,13 @@ export class Player {
     this.updateList.forEach((component) => {
       component.update()
     })
+  }
+
+  getDirection() {
+    return this.moveController.currDirection
+  }
+
+  getCurrState() {
+    return this.stateMachine.getState()
   }
 }

@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import { Player } from '../core/player/Player'
-import { Map } from '~/core/Map'
+import { Map } from '~/core/map/Map'
 import { Constants } from '~/utils/Constants'
 import { createPlayerArmsAnims, createPlayerBaseAnims } from '~/anims/PlayerAnims'
 
@@ -32,12 +32,6 @@ export default class Game extends Phaser.Scene {
   initTilemap() {
     this.map = new Map(this, {
       tileMapKey: 'intro-island',
-      npcConfig: {
-        John: {
-          dialog: 'Hello world!',
-          texture: 'npc',
-        },
-      },
     })
   }
 
