@@ -48,7 +48,6 @@ export default class Game extends Phaser.Scene {
           scale: { x: 2, y: 2 },
           layersToCollideWith: ['Ocean'],
         })
-        this.cameras.main.startFollow(this.player.baseSprite, true)
         this.cameras.main.setBounds(0, 0, Constants.GAME_WIDTH, Constants.GAME_HEIGHT)
       }
     }

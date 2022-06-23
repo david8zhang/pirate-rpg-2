@@ -12,11 +12,7 @@ export class MoveState extends State {
     }
 
     if (moveController.currDirection) {
-      const animDirection = Constants.getAnimationDirection(moveController.currDirection)
-
-      // Play animations
-      player.baseSprite.anims.play(`player-base-walk-${animDirection}`, true)
-      player.armsSprite.anims.play(`player-arms-walk-${animDirection}`, true)
+      player.animController.playMoveAnimation(moveController.currDirection)
     }
   }
 }
