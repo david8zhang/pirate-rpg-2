@@ -6,6 +6,7 @@ import { MoveState } from './states/MoveState'
 import { AnimationController } from './AnimationController'
 import { AttackController } from './AttackController'
 import { AttackState } from './states/AttackState'
+import { EquipmentManager } from './EquipmentManager'
 
 export interface PlayerConfig {
   position: {
@@ -22,16 +23,14 @@ export interface PlayerConfig {
 export class Player {
   private game: Game
   public stateMachine: StateMachine
-  public moveController: MoveController
-  public animController: AnimationController
-  public attackController: AttackController
+  public moveController!: MoveController
+  public animController!: AnimationController
+  public attackController!: AttackController
+  public equipmentManager!: EquipmentManager
 
   constructor(game: Game, config: PlayerConfig) {
     this.game = game
-
-    this.animController = new AnimationController(config, game)
-    this.moveController = new MoveController(this.animController.sprites, this.game)
-    this.attackController = new AttackController(game, this)
+    this.setupManagers(game, config)
     this.stateMachine = new StateMachine(
       'idle',
       {
@@ -41,6 +40,26 @@ export class Player {
       },
       [this]
     )
+  }
+
+  setupManagers(game: Game, config: PlayerConfig) {
+    this.equipmentManager = new EquipmentManager({
+      player: this,
+      game,
+    })
+    this.animController = new AnimationController({
+      playerConfig: config,
+      game,
+      player: this,
+    })
+    this.moveController = new MoveController({
+      sprites: this.animController.sprites,
+      game,
+    })
+    this.attackController = new AttackController({
+      player: this,
+      game,
+    })
   }
 
   get position() {
@@ -65,5 +84,19 @@ export class Player {
 
   getCurrState() {
     return this.stateMachine.getState()
+  }
+
+  getSpriteMapping() {
+    return {
+      base: 'player-base',
+      arms: this.equipmentManager.armArmor ? this.equipmentManager.armArmor.animKey : 'player-arms',
+      legs: this.equipmentManager.legArmor ? this.equipmentManager.legArmor.animKey : '',
+      head: this.equipmentManager.headArmor ? this.equipmentManager.headArmor.animKey : '',
+      chest: this.equipmentManager.chestArmor ? this.equipmentManager.chestArmor.animKey : '',
+    }
+  }
+
+  getBaseKey() {
+    return 'base'
   }
 }

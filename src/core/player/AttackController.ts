@@ -1,11 +1,17 @@
 import Game from '~/scenes/Game'
 import { Player } from './Player'
 
+export interface AttackControllerConfig {
+  game: Game
+  player: Player
+}
+
 export class AttackController {
   private game: Game
   private keySpace!: Phaser.Input.Keyboard.Key
 
-  constructor(game: Game, player: Player) {
+  constructor(config: AttackControllerConfig) {
+    const { game } = config
     this.game = game
     this.setupKeyboardKeys()
   }

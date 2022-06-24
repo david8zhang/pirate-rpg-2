@@ -1,27 +1,43 @@
 import Game from '~/scenes/Game'
 import { Direction } from './MoveController'
-import { PlayerConfig } from './Player'
+import { Player, PlayerConfig } from './Player'
+
+export interface AnimationControllerConfig {
+  playerConfig: PlayerConfig
+  game: Game
+  player: Player
+}
 
 export class AnimationController {
   private game: Game
-  public sprites: Phaser.Physics.Arcade.Sprite[] = []
+  private player: Player
 
-  constructor(config: PlayerConfig, game: Game) {
+  // Mapping of each character piece to a sprite animation key
+  public spriteMapping: any = {}
+
+  constructor(config: AnimationControllerConfig) {
+    const { playerConfig, game, player } = config
     this.game = game
-    this.setupSprites(config)
-    if (config.layersToCollideWith) {
-      this.setupTilemapCollision(config.layersToCollideWith)
+    this.player = player
+    this.setupSprites(playerConfig)
+    if (playerConfig.layersToCollideWith) {
+      this.setupTilemapCollision(playerConfig.layersToCollideWith)
     }
   }
 
   setupSprites(config: PlayerConfig) {
     // Sprites
-    const keys = ['player-base', 'player-arms']
-    keys.forEach((key, index) => {
-      const sprite = this.addSprite(config, key, index + 1)
-      this.sprites.push(sprite)
+    const spriteKeyMapping = this.player.getSpriteMapping()
+    Object.keys(spriteKeyMapping).forEach((key, index) => {
+      const spriteKey = spriteKeyMapping[key]
+      const sprite = this.addSprite(config, spriteKey, index + 1)
+      if (!spriteKey) {
+        sprite.setVisible(false)
+      }
+      this.spriteMapping[key] = sprite
     })
-    this.game.cameras.main.startFollow(this.sprites[0])
+    const baseKey = this.player.getBaseKey()
+    this.game.cameras.main.startFollow(this.spriteMapping[baseKey])
   }
 
   addSprite(config: PlayerConfig, spriteKey: string, depth: number): Phaser.Physics.Arcade.Sprite {
@@ -50,11 +66,14 @@ export class AnimationController {
 
   playAttackAnimation(direction: Direction, isArmed: boolean, onCompletedFn: Function) {
     const animDirection = this.getAnimationDirection(direction)
+
     this.sprites.forEach((sprite) => {
-      if (!isArmed) {
-        sprite.anims.play(`${sprite.texture.key}-punch-${animDirection}`)
-      } else {
-        sprite.anims.play(`${sprite.texture.key}-swipe-${animDirection}`)
+      if (sprite.visible) {
+        if (!isArmed) {
+          sprite.anims.play(`${sprite.texture.key}-punch-${animDirection}`)
+        } else {
+          sprite.anims.play(`${sprite.texture.key}-swipe-${animDirection}`)
+        }
       }
     })
     this.sprites[0].once('animationcomplete', () => {
@@ -64,20 +83,26 @@ export class AnimationController {
 
   playMoveAnimation(direction: Direction) {
     const animDirection = this.getAnimationDirection(direction)
+
     this.sprites.forEach((sprite) => {
-      sprite.anims.play(`${sprite.texture.key}-walk-${animDirection}`, true)
+      if (sprite.visible) {
+        sprite.anims.play(`${sprite.texture.key}-walk-${animDirection}`, true)
+      }
     })
   }
 
   playIdleAnimation(direction: Direction) {
     const animDirection = this.getAnimationDirection(direction)
+
     this.sprites.forEach((sprite) => {
-      sprite.anims.play(`${sprite.texture.key}-idle-${animDirection}`, true)
+      if (sprite.visible) {
+        sprite.anims.play(`${sprite.texture.key}-idle-${animDirection}`, true)
+      }
     })
   }
 
   getSpriteByName(name: string) {
-    return this.sprites.find((sprite) => sprite.texture.key == name)
+    return this.sprites.find((sprite) => sprite.texture.key === name)
   }
 
   setupTilemapCollision(layersToCollideWith: string[]) {
@@ -87,5 +112,18 @@ export class AnimationController {
         this.game.physics.add.collider(layerToCollideWith, sprite)
       })
     })
+  }
+
+  get sprites() {
+    return Object.keys(this.spriteMapping).map((key) => this.spriteMapping[key])
+  }
+
+  setSpriteTextureForKey(key: string, texture: string) {
+    if (!texture) {
+      this.spriteMapping[key].setVisible(false)
+    } else {
+      this.spriteMapping[key].setVisible(true)
+    }
+    this.spriteMapping[key].setTexture(texture)
   }
 }

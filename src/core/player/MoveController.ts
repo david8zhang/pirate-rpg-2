@@ -8,6 +8,11 @@ export enum Direction {
   UP = 'UP',
 }
 
+export interface MoveControllerConfig {
+  sprites: Phaser.Physics.Arcade.Sprite[]
+  game: Game
+}
+
 export class MoveController {
   private sprites: Phaser.Physics.Arcade.Sprite[]
   private game: Game
@@ -21,7 +26,8 @@ export class MoveController {
   // Direction that the player is currently facing
   public currDirection: Direction | null = null
 
-  constructor(sprites: Phaser.Physics.Arcade.Sprite[], game: Game) {
+  constructor(config: MoveControllerConfig) {
+    const { sprites, game } = config
     this.sprites = sprites
     this.game = game
     this.setupKeyboardKeys()
