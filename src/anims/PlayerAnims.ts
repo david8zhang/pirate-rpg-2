@@ -77,7 +77,7 @@ export const createPlayerBaseAnims = (anims: Phaser.Animations.AnimationManager)
       end: 35,
       suffix: '.png',
     }),
-    repeat: -1,
+    repeat: 0,
     frameRate: 10,
   })
 
@@ -88,7 +88,7 @@ export const createPlayerBaseAnims = (anims: Phaser.Animations.AnimationManager)
       end: 27,
       suffix: '.png',
     }),
-    repeat: -1,
+    repeat: 0,
     frameRate: 10,
   })
 
@@ -99,11 +99,22 @@ export const createPlayerBaseAnims = (anims: Phaser.Animations.AnimationManager)
       end: 31,
       suffix: '.png',
     }),
-    repeat: -1,
+    repeat: 0,
     frameRate: 10,
   })
 
   // Punch animations
+  anims.create({
+    key: 'player-base-punch-back',
+    frames: anims.generateFrameNames('player-base', {
+      start: 28,
+      end: 31,
+      suffix: '.png',
+    }),
+    repeat: 0,
+    frameRate: 10,
+  })
+
   anims.create({
     key: 'player-base-punch-front',
     frames: anims.generateFrameNames('player-base', {
@@ -111,7 +122,7 @@ export const createPlayerBaseAnims = (anims: Phaser.Animations.AnimationManager)
       end: 39,
       suffix: '.png',
     }),
-    repeat: -1,
+    repeat: 0,
     frameRate: 10,
   })
 
@@ -122,7 +133,7 @@ export const createPlayerBaseAnims = (anims: Phaser.Animations.AnimationManager)
       end: 43,
       suffix: '.png',
     }),
-    repeat: -1,
+    repeat: 0,
     frameRate: 10,
   })
 }
@@ -204,7 +215,7 @@ export const createPlayerArmsAnims = (anims: Phaser.Animations.AnimationManager)
       end: 35,
       suffix: '.png',
     }),
-    repeat: -1,
+    repeat: 0,
     frameRate: 10,
   })
 
@@ -215,7 +226,7 @@ export const createPlayerArmsAnims = (anims: Phaser.Animations.AnimationManager)
       end: 27,
       suffix: '.png',
     }),
-    repeat: -1,
+    repeat: 0,
     frameRate: 10,
   })
 
@@ -226,11 +237,22 @@ export const createPlayerArmsAnims = (anims: Phaser.Animations.AnimationManager)
       end: 31,
       suffix: '.png',
     }),
-    repeat: -1,
+    repeat: 0,
     frameRate: 10,
   })
 
   // Punch animations
+  anims.create({
+    key: 'player-arms-punch-back',
+    frames: anims.generateFrameNames('player-arms', {
+      start: 28,
+      end: 31,
+      suffix: '.png',
+    }),
+    repeat: 0,
+    frameRate: 10,
+  })
+
   anims.create({
     key: 'player-arms-punch-front',
     frames: anims.generateFrameNames('player-arms', {
@@ -238,7 +260,7 @@ export const createPlayerArmsAnims = (anims: Phaser.Animations.AnimationManager)
       end: 39,
       suffix: '.png',
     }),
-    repeat: -1,
+    repeat: 0,
     frameRate: 10,
   })
 
@@ -249,7 +271,7 @@ export const createPlayerArmsAnims = (anims: Phaser.Animations.AnimationManager)
       end: 43,
       suffix: '.png',
     }),
-    repeat: -1,
+    repeat: 0,
     frameRate: 10,
   })
 }

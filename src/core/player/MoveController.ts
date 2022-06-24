@@ -42,6 +42,12 @@ export class MoveController {
     return leftDown || rightDown || upDown || downDown
   }
 
+  stop() {
+    this.sprites.forEach((sprite) => {
+      sprite.setVelocity(0)
+    })
+  }
+
   handlePlayerMovement() {
     if (!this.keyA || !this.keyD || !this.keyW || !this.keyS) {
       return
@@ -75,6 +81,7 @@ export class MoveController {
         velocityY = 0
       }
       this.sprites.forEach((sprite) => {
+        sprite.setFlipX(false)
         sprite.setVelocityY(velocityY)
       })
     } else {
@@ -82,9 +89,5 @@ export class MoveController {
         sprite.setVelocityY(0)
       })
     }
-  }
-
-  update() {
-    this.handlePlayerMovement()
   }
 }

@@ -1,5 +1,5 @@
 import { State } from '~/core/StateMachine'
-import { Constants } from '~/utils/Constants'
+import Game from '~/scenes/Game'
 import { Player } from '../Player'
 
 export class MoveState extends State {
@@ -7,12 +7,15 @@ export class MoveState extends State {
     const moveController = player.moveController
     moveController.handlePlayerMovement()
 
-    if (!moveController.detectMovement()) {
+    if (player.attackController && player.attackController.detectAttack()) {
+      this.stateMachine.transition('attack')
+    } else if (!moveController.detectMovement()) {
       this.stateMachine.transition('idle')
-    }
-
-    if (moveController.currDirection) {
-      player.animController.playMoveAnimation(moveController.currDirection)
+    } else {
+      const direction = player.getDirection()
+      if (direction) {
+        player.animController.playMoveAnimation(direction)
+      }
     }
   }
 }

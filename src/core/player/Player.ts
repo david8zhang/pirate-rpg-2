@@ -4,6 +4,8 @@ import { StateMachine } from '../StateMachine'
 import { IdleState } from './states/IdleState'
 import { MoveState } from './states/MoveState'
 import { AnimationController } from './AnimationController'
+import { AttackController } from './AttackController'
+import { AttackState } from './states/AttackState'
 
 export interface PlayerConfig {
   position: {
@@ -19,21 +21,23 @@ export interface PlayerConfig {
 
 export class Player {
   private game: Game
-  private updateList: any[] = []
   public stateMachine: StateMachine
   public moveController: MoveController
   public animController: AnimationController
+  public attackController: AttackController
 
   constructor(game: Game, config: PlayerConfig) {
     this.game = game
 
     this.animController = new AnimationController(config, game)
     this.moveController = new MoveController(this.animController.sprites, this.game)
+    this.attackController = new AttackController(game, this)
     this.stateMachine = new StateMachine(
       'idle',
       {
         idle: new IdleState(),
         move: new MoveState(),
+        attack: new AttackState(),
       },
       [this]
     )
@@ -49,9 +53,10 @@ export class Player {
 
   update() {
     this.stateMachine.step()
-    this.updateList.forEach((component) => {
-      component.update()
-    })
+  }
+
+  public stop() {
+    this.moveController.stop()
   }
 
   getDirection() {

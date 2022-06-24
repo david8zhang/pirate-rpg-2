@@ -48,6 +48,20 @@ export class AnimationController {
     }
   }
 
+  playAttackAnimation(direction: Direction, isArmed: boolean, onCompletedFn: Function) {
+    const animDirection = this.getAnimationDirection(direction)
+    this.sprites.forEach((sprite) => {
+      if (!isArmed) {
+        sprite.anims.play(`${sprite.texture.key}-punch-${animDirection}`)
+      } else {
+        sprite.anims.play(`${sprite.texture.key}-swipe-${animDirection}`)
+      }
+    })
+    this.sprites[0].once('animationcomplete', () => {
+      onCompletedFn()
+    })
+  }
+
   playMoveAnimation(direction: Direction) {
     const animDirection = this.getAnimationDirection(direction)
     this.sprites.forEach((sprite) => {
