@@ -3,6 +3,8 @@ import { Player } from '../core/player/Player'
 import { Map } from '~/core/map/Map'
 import { Constants } from '~/utils/Constants'
 import { createPlayerArmsAnims, createPlayerBaseAnims } from '~/anims/PlayerAnims'
+import { createEquipmentAnims } from '~/anims/EquipmentAnims'
+import { ArmorType } from '~/core/player/EquipmentManager'
 
 export default class Game extends Phaser.Scene {
   public player!: Player
@@ -25,8 +27,10 @@ export default class Game extends Phaser.Scene {
   create() {
     createPlayerBaseAnims(this.anims)
     createPlayerArmsAnims(this.anims)
+    createEquipmentAnims(this.anims)
     this.initTilemap()
     this.initPlayer()
+    this.cameras.main.setBounds(0, 0, Constants.GAME_WIDTH, Constants.GAME_HEIGHT)
   }
 
   initTilemap() {
@@ -48,7 +52,11 @@ export default class Game extends Phaser.Scene {
           scale: { x: 2, y: 2 },
           layersToCollideWith: ['Ocean'],
         })
-        this.cameras.main.setBounds(0, 0, Constants.GAME_WIDTH, Constants.GAME_HEIGHT)
+
+        // Add equipment
+        this.player.addEquipment(ArmorType.HEAD, { animKey: 'red-bandana' })
+        this.player.addEquipment(ArmorType.LEGS, { animKey: 'leather-pants' })
+        this.player.addEquipment(ArmorType.CHEST, { animKey: 'leather-vest' })
       }
     }
   }

@@ -6,7 +6,7 @@ import { MoveState } from './states/MoveState'
 import { AnimationController } from './AnimationController'
 import { AttackController } from './AttackController'
 import { AttackState } from './states/AttackState'
-import { EquipmentManager } from './EquipmentManager'
+import { ArmorPiece, ArmorType, EquipmentManager } from './EquipmentManager'
 
 export interface PlayerConfig {
   position: {
@@ -40,6 +40,11 @@ export class Player {
       },
       [this]
     )
+  }
+
+  addEquipment(armorType: ArmorType, armorPiece: ArmorPiece) {
+    this.equipmentManager.setArmorPiece(armorType, armorPiece)
+    this.animController.setSpriteTextureForKey(armorType, armorPiece.animKey)
   }
 
   setupManagers(game: Game, config: PlayerConfig) {
@@ -88,15 +93,23 @@ export class Player {
 
   getSpriteMapping() {
     return {
-      base: 'player-base',
-      arms: this.equipmentManager.armArmor ? this.equipmentManager.armArmor.animKey : 'player-arms',
-      legs: this.equipmentManager.legArmor ? this.equipmentManager.legArmor.animKey : '',
-      head: this.equipmentManager.headArmor ? this.equipmentManager.headArmor.animKey : '',
-      chest: this.equipmentManager.chestArmor ? this.equipmentManager.chestArmor.animKey : '',
+      [ArmorType.BASE]: 'player-base',
+      [ArmorType.ARMS]: this.equipmentManager.armArmor
+        ? this.equipmentManager.armArmor.animKey
+        : 'player-arms',
+      [ArmorType.LEGS]: this.equipmentManager.legArmor
+        ? this.equipmentManager.legArmor.animKey
+        : '',
+      [ArmorType.HEAD]: this.equipmentManager.headArmor
+        ? this.equipmentManager.headArmor.animKey
+        : '',
+      [ArmorType.CHEST]: this.equipmentManager.chestArmor
+        ? this.equipmentManager.chestArmor.animKey
+        : '',
     }
   }
 
   getBaseKey() {
-    return 'base'
+    return ArmorType.BASE
   }
 }

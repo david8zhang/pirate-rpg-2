@@ -2,11 +2,12 @@ import Game from '~/scenes/Game'
 import { Player } from './Player'
 
 // Add stats later
-interface ArmorPiece {
+export interface ArmorPiece {
   animKey: string
 }
 
-enum ArmorType {
+export enum ArmorType {
+  BASE = 'BASE',
   HEAD = 'HEAD',
   CHEST = 'CHEST',
   LEGS = 'LEGS',
