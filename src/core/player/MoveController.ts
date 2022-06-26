@@ -1,5 +1,6 @@
 import Game from '~/scenes/Game'
 import { Constants } from '~/utils/Constants'
+import { Player } from './Player'
 
 export enum Direction {
   RIGHT = 'RIGHT',
@@ -9,13 +10,13 @@ export enum Direction {
 }
 
 export interface MoveControllerConfig {
-  sprites: Phaser.Physics.Arcade.Sprite[]
+  player: Player
   game: Game
 }
 
 export class MoveController {
-  private sprites: Phaser.Physics.Arcade.Sprite[]
   private game: Game
+  private player: Player
 
   // WASD movement
   private keyW!: Phaser.Input.Keyboard.Key
@@ -27,9 +28,9 @@ export class MoveController {
   public currDirection: Direction | null = null
 
   constructor(config: MoveControllerConfig) {
-    const { sprites, game } = config
-    this.sprites = sprites
+    const { game, player } = config
     this.game = game
+    this.player = player
     this.setupKeyboardKeys()
   }
 
@@ -49,7 +50,8 @@ export class MoveController {
   }
 
   stop() {
-    this.sprites.forEach((sprite) => {
+    const sprites = this.player.getSprites()
+    sprites.forEach((sprite) => {
       sprite.setVelocity(0)
     })
   }
@@ -65,18 +67,20 @@ export class MoveController {
     const downDown = this.keyS.isDown
 
     const speed = Constants.PLAYER_SPEED
+    const sprites = this.player.getSprites()
+
     if (leftDown || rightDown) {
       let velocityX = leftDown ? -speed : speed
       this.currDirection = leftDown ? Direction.LEFT : Direction.RIGHT
       if (leftDown && rightDown) {
         velocityX = 0
       }
-      this.sprites.forEach((sprite) => {
+      sprites.forEach((sprite) => {
         sprite.setVelocityX(velocityX)
         sprite.setFlipX(leftDown)
       })
     } else {
-      this.sprites.forEach((sprite) => {
+      sprites.forEach((sprite) => {
         sprite.setVelocityX(0)
       })
     }
@@ -86,12 +90,12 @@ export class MoveController {
       if (upDown && downDown) {
         velocityY = 0
       }
-      this.sprites.forEach((sprite) => {
+      sprites.forEach((sprite) => {
         sprite.setFlipX(false)
         sprite.setVelocityY(velocityY)
       })
     } else {
-      this.sprites.forEach((sprite) => {
+      sprites.forEach((sprite) => {
         sprite.setVelocityY(0)
       })
     }

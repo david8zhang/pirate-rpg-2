@@ -7,6 +7,7 @@ import { AnimationController } from './AnimationController'
 import { AttackController } from './AttackController'
 import { AttackState } from './states/AttackState'
 import { ArmorPiece, ArmorType, EquipmentManager } from './EquipmentManager'
+import { ColliderController } from './ColliderController'
 
 export interface PlayerConfig {
   position: {
@@ -14,6 +15,10 @@ export interface PlayerConfig {
     y: number
   }
   scale: {
+    x: number
+    y: number
+  }
+  body: {
     x: number
     y: number
   }
@@ -27,6 +32,7 @@ export class Player {
   public animController!: AnimationController
   public attackController!: AttackController
   public equipmentManager!: EquipmentManager
+  public colliderController!: ColliderController
 
   constructor(game: Game, config: PlayerConfig) {
     this.game = game
@@ -57,13 +63,22 @@ export class Player {
       game,
       player: this,
     })
-    this.moveController = new MoveController({
-      sprites: this.animController.sprites,
-      game,
-    })
     this.attackController = new AttackController({
       player: this,
       game,
+    })
+    this.moveController = new MoveController({
+      player: this,
+      game,
+    })
+    this.colliderController = new ColliderController({
+      player: this,
+      game,
+      playerConfig: config,
+      colliderConfig: {
+        width: 32,
+        height: 32,
+      },
     })
   }
 
@@ -111,5 +126,9 @@ export class Player {
 
   getBaseKey() {
     return ArmorType.BASE
+  }
+
+  getSprites() {
+    return this.animController.sprites
   }
 }

@@ -20,9 +20,6 @@ export class AnimationController {
     this.game = game
     this.player = player
     this.setupSprites(playerConfig)
-    if (playerConfig.layersToCollideWith) {
-      this.setupTilemapCollision(playerConfig.layersToCollideWith)
-    }
   }
 
   setupSprites(config: PlayerConfig) {
@@ -103,15 +100,6 @@ export class AnimationController {
 
   getSpriteByName(name: string) {
     return this.sprites.find((sprite) => sprite.texture.key === name)
-  }
-
-  setupTilemapCollision(layersToCollideWith: string[]) {
-    layersToCollideWith.forEach((layer: string) => {
-      const layerToCollideWith = this.game.map.getLayer(layer)
-      this.sprites.forEach((sprite) => {
-        this.game.physics.add.collider(layerToCollideWith, sprite)
-      })
-    })
   }
 
   get sprites() {

@@ -50,6 +50,10 @@ export default class Game extends Phaser.Scene {
             y: spawnPoint.y as number,
           },
           scale: { x: 2, y: 2 },
+          body: {
+            x: 0.2,
+            y: 0.2,
+          },
           layersToCollideWith: ['Ocean'],
         })
 
