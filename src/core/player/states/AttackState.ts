@@ -1,5 +1,5 @@
 import { State } from '~/core/StateMachine'
-import Game from '~/scenes/Game'
+
 import { Player } from '../Player'
 
 export class AttackState extends State {
@@ -7,8 +7,10 @@ export class AttackState extends State {
     player.stop()
     const currDirection = player.getDirection()
     if (currDirection) {
+      player.colliderController.activateAttackHitbox(currDirection)
       player.animController.playAttackAnimation(currDirection, false, () => {
         this.stateMachine.transition('idle')
+        player.colliderController.deactivateAttackHitbox()
       })
     }
   }

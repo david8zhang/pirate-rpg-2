@@ -1,4 +1,4 @@
-import { Direction } from '~/core/player/MoveController'
+import { Direction } from '~/core/player/controllers/MoveController'
 
 export class Constants {
   public static PLAYER_SPEED = 200

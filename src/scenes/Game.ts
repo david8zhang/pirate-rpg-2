@@ -4,7 +4,7 @@ import { Map } from '~/core/map/Map'
 import { Constants } from '~/utils/Constants'
 import { createPlayerArmsAnims, createPlayerBaseAnims } from '~/anims/PlayerAnims'
 import { createEquipmentAnims } from '~/anims/EquipmentAnims'
-import { ArmorType } from '~/core/player/EquipmentManager'
+import { ArmorType } from '~/core/player/managers/EquipmentManager'
 
 export default class Game extends Phaser.Scene {
   public player!: Player

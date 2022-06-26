@@ -1,5 +1,4 @@
 import { State } from '~/core/StateMachine'
-import Game from '~/scenes/Game'
 import { Player } from '../Player'
 
 export class MoveState extends State {

@@ -1,5 +1,5 @@
 import Game from '~/scenes/Game'
-import { Player } from './Player'
+import { Player } from '../Player'
 
 // Add stats later
 export interface ArmorPiece {

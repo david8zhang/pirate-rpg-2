@@ -1,6 +1,6 @@
 import Game from '~/scenes/Game'
 import { Constants } from '~/utils/Constants'
-import { Player } from './Player'
+import { Player } from '../Player'
 
 export enum Direction {
   RIGHT = 'RIGHT',

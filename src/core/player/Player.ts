@@ -1,13 +1,14 @@
 import Game from '~/scenes/Game'
-import { MoveController } from './MoveController'
+import { MoveController } from './controllers/MoveController'
 import { StateMachine } from '../StateMachine'
 import { IdleState } from './states/IdleState'
 import { MoveState } from './states/MoveState'
-import { AnimationController } from './AnimationController'
-import { AttackController } from './AttackController'
+import { AnimationController } from './controllers/AnimationController'
+import { AttackController } from './controllers/AttackController'
 import { AttackState } from './states/AttackState'
-import { ArmorPiece, ArmorType, EquipmentManager } from './EquipmentManager'
-import { ColliderController } from './ColliderController'
+import { ArmorPiece, ArmorType, EquipmentManager } from './managers/EquipmentManager'
+import { SpriteManager } from './managers/SpriteManager'
+import { ColliderController } from './controllers/ColliderController'
 
 export interface PlayerConfig {
   position: {
@@ -28,15 +29,21 @@ export interface PlayerConfig {
 export class Player {
   private game: Game
   public stateMachine: StateMachine
+
+  // Store states
+  public equipmentManager!: EquipmentManager
+  public spriteManager!: SpriteManager
+
+  // Writes states, or mutates state in some way
   public moveController!: MoveController
   public animController!: AnimationController
   public attackController!: AttackController
-  public equipmentManager!: EquipmentManager
   public colliderController!: ColliderController
 
   constructor(game: Game, config: PlayerConfig) {
     this.game = game
     this.setupManagers(game, config)
+    this.setupControllers(game, config)
     this.stateMachine = new StateMachine(
       'idle',
       {
@@ -48,28 +55,25 @@ export class Player {
     )
   }
 
-  addEquipment(armorType: ArmorType, armorPiece: ArmorPiece) {
-    this.equipmentManager.setArmorPiece(armorType, armorPiece)
-    this.animController.setSpriteTextureForKey(armorType, armorPiece.animKey)
-  }
-
   setupManagers(game: Game, config: PlayerConfig) {
     this.equipmentManager = new EquipmentManager({
       player: this,
       game,
     })
-    this.animController = new AnimationController({
+    this.spriteManager = new SpriteManager({
       playerConfig: config,
-      game,
-      player: this,
-    })
-    this.attackController = new AttackController({
       player: this,
       game,
     })
-    this.moveController = new MoveController({
+  }
+
+  setupControllers(game: Game, config: PlayerConfig) {
+    this.equipmentManager = new EquipmentManager({
       player: this,
       game,
+    })
+    this.animController = new AnimationController({
+      sprites: this.spriteManager.sprites,
     })
     this.colliderController = new ColliderController({
       player: this,
@@ -80,22 +84,36 @@ export class Player {
         height: 32,
       },
     })
+    this.moveController = new MoveController({
+      player: this,
+      game,
+    })
+    this.attackController = new AttackController({
+      player: this,
+      game,
+    })
   }
 
   get position() {
-    const baseSprite = this.animController.getSpriteByName('player-base')
+    const baseSprite = this.spriteManager.getSpriteByName('player-base')
     return {
       x: baseSprite?.x,
       y: baseSprite?.y,
     }
   }
 
-  update() {
-    this.stateMachine.step()
+  get displaySize() {
+    const baseSprite = this.spriteManager.getSpriteByName(
+      'player-base'
+    ) as Phaser.Physics.Arcade.Sprite
+    return {
+      width: baseSprite.displayWidth,
+      height: baseSprite.displayHeight,
+    }
   }
 
-  public stop() {
-    this.moveController.stop()
+  update() {
+    this.stateMachine.step()
   }
 
   getDirection() {
@@ -106,29 +124,16 @@ export class Player {
     return this.stateMachine.getState()
   }
 
-  getSpriteMapping() {
-    return {
-      [ArmorType.BASE]: 'player-base',
-      [ArmorType.ARMS]: this.equipmentManager.armArmor
-        ? this.equipmentManager.armArmor.animKey
-        : 'player-arms',
-      [ArmorType.LEGS]: this.equipmentManager.legArmor
-        ? this.equipmentManager.legArmor.animKey
-        : '',
-      [ArmorType.HEAD]: this.equipmentManager.headArmor
-        ? this.equipmentManager.headArmor.animKey
-        : '',
-      [ArmorType.CHEST]: this.equipmentManager.chestArmor
-        ? this.equipmentManager.chestArmor.animKey
-        : '',
-    }
-  }
-
-  getBaseKey() {
-    return ArmorType.BASE
-  }
-
   getSprites() {
-    return this.animController.sprites
+    return this.spriteManager.sprites
+  }
+
+  addEquipment(armorType: ArmorType, armorPiece: ArmorPiece) {
+    this.equipmentManager.setArmorPiece(armorType, armorPiece)
+    this.spriteManager.setSpriteTextureForKey(armorType, armorPiece.animKey)
+  }
+
+  public stop() {
+    this.moveController.stop()
   }
 }
