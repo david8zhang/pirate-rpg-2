@@ -1,6 +1,29 @@
+import { HarvestableTypes } from '~/core/Harvestable'
 import { Direction } from '~/core/player/controllers/MoveController'
 
+export interface GameConfig {
+  npcConfig?: {
+    [name: string]: {
+      dialog: string
+      texture: string
+    }
+  }
+  harvestableConfig?: {
+    harvestableType: HarvestableTypes
+    position: { x: number; y: number }
+  }[]
+}
+
 export class Constants {
+  public static GAME_CONFIG: GameConfig = {
+    harvestableConfig: [
+      {
+        harvestableType: HarvestableTypes.PALM_TREE,
+        position: { x: 1500, y: 1500 },
+      },
+    ],
+  }
+
   public static PLAYER_SPEED = 200
   public static SCREEN_WIDTH = 1200
   public static SCREEN_HEIGHT = 900
@@ -14,7 +37,6 @@ export class Constants {
   public static GAME_HEIGHT = Constants.TILE_SIZE * Constants.MAP_HEIGHT * Constants.LAYER_SCALE
 
   public static NPC_CHAT_THRESHOLD = 100
-
   public static getAnimationDirection(direction: Direction) {
     switch (direction) {
       case Direction.LEFT:
