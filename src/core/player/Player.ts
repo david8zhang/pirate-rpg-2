@@ -27,7 +27,7 @@ export interface PlayerConfig {
 }
 
 export class Player {
-  private game: Game
+  public game: Game
   public stateMachine: StateMachine
 
   // Store states
@@ -110,6 +110,10 @@ export class Player {
       width: baseSprite.displayWidth,
       height: baseSprite.displayHeight,
     }
+  }
+
+  get attackHitbox() {
+    return this.colliderController.attackHitbox
   }
 
   update() {

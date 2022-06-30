@@ -11,6 +11,7 @@ export class AttackState extends State {
       player.animController.playAttackAnimation(currDirection, false, () => {
         this.stateMachine.transition('idle')
         player.colliderController.deactivateAttackHitbox()
+        player.game.isHarvestableCollided = false
       })
     }
   }

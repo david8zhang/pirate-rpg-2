@@ -12,8 +12,13 @@ export default class Game extends Phaser.Scene {
   public player!: Player
   public map!: Map
   public animatedTiles: any
-  public npcs: NPC[] = []
-  public harvestables: Harvestable[] = []
+
+  // Map stuff
+  public npcGroup!: Phaser.GameObjects.Group
+  public harvestableGroup!: Phaser.GameObjects.Group
+
+  // Collider game object groups
+  public isHarvestableCollided: boolean = false
 
   constructor() {
     super('game')
@@ -36,6 +41,7 @@ export default class Game extends Phaser.Scene {
     this.initPlayer()
     this.initHarvestables()
     this.cameras.main.setBounds(0, 0, Constants.GAME_WIDTH, Constants.GAME_HEIGHT)
+    this.initColliders()
   }
 
   initTilemap() {
@@ -69,6 +75,7 @@ export default class Game extends Phaser.Scene {
   }
 
   initNPCs() {
+    this.npcGroup = this.add.group()
     const npcLayer = this.map.tileMap.getObjectLayer('NPC')
     if (npcLayer && Constants.GAME_CONFIG.npcConfig) {
       npcLayer.objects.forEach((layerConfig) => {
@@ -85,12 +92,13 @@ export default class Game extends Phaser.Scene {
           texture: npcConfig.texture,
           dialog: npcConfig.dialog,
         })
-        this.npcs.push(npc)
+        this.npcGroup.add(npc.sprite)
       })
     }
   }
 
   initHarvestables() {
+    this.harvestableGroup = this.add.group()
     if (Constants.GAME_CONFIG.harvestableConfig) {
       const allHarvestables = Constants.GAME_CONFIG.harvestableConfig
       allHarvestables.forEach((config) => {
@@ -101,9 +109,18 @@ export default class Game extends Phaser.Scene {
           hitbox: harvestableConfig.hitbox,
           scale: harvestableConfig.scale,
         })
-        this.harvestables.push(harvestable)
+        this.harvestableGroup.add(harvestable.sprite)
       })
     }
+  }
+
+  initColliders() {
+    this.physics.add.collider(this.player.attackHitbox, this.harvestableGroup, (obj1, obj2) => {
+      if (!this.isHarvestableCollided) {
+        this.isHarvestableCollided = true
+        this.cameras.main.shake(150, 0.002)
+      }
+    })
   }
 
   update() {

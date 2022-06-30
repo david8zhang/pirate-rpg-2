@@ -33,12 +33,12 @@ export const HARVESTABLE_CONFIGS = {
 
 export class Harvestable {
   private game: Game
-  private sprite: Phaser.GameObjects.Sprite
+  private _sprite: Phaser.GameObjects.Sprite
   private hitbox: Phaser.Physics.Arcade.Sprite
 
   constructor(game: Game, config: HarvestableConfig) {
     this.game = game
-    this.sprite = this.game.add
+    this._sprite = this.game.add
       .sprite(config.position.x, config.position.y, config.textureKey)
       .setScale(config.scale ? config.scale : 1)
 
@@ -49,5 +49,9 @@ export class Harvestable {
       .setVisible(false)
       .setDisplaySize(config.hitbox.width, config.hitbox.height)
     this.game.physics.world.enableBody(this.hitbox, Phaser.Physics.Arcade.DYNAMIC_BODY)
+  }
+
+  public get sprite() {
+    return this.hitbox
   }
 }
