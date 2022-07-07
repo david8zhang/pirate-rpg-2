@@ -3,7 +3,6 @@ import Phaser from 'phaser'
 import Game from './scenes/Game'
 import Preload from './scenes/Preload'
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin'
-import AnimatedTiles from 'phaser-animated-tiles/dist/AnimatedTiles'
 import { Constants } from './utils/Constants'
 import { GameUI } from './scenes/GameUI'
 

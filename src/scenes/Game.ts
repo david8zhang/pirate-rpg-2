@@ -19,6 +19,7 @@ export default class Game extends Phaser.Scene {
 
   // Collider game object groups
   public isHarvestableCollided: boolean = false
+  public ignoreDepthSortingNames = ['InAir', 'UI', 'Weapon', 'Structure', 'Transport', 'Effect']
 
   constructor() {
     super('game')
@@ -104,10 +105,11 @@ export default class Game extends Phaser.Scene {
       allHarvestables.forEach((config) => {
         const harvestableConfig = HARVESTABLE_CONFIGS[config.harvestableType]
         const harvestable = new Harvestable(this, {
-          textureKey: harvestableConfig.textureKey,
+          textures: harvestableConfig.textures,
           position: config.position,
           hitbox: harvestableConfig.hitbox,
           scale: harvestableConfig.scale,
+          dropItems: harvestableConfig.droppedItems,
         })
         this.harvestableGroup.add(harvestable.sprite)
       })
@@ -115,10 +117,13 @@ export default class Game extends Phaser.Scene {
   }
 
   initColliders() {
+    // Harvestable colliders
     this.physics.add.collider(this.player.attackHitbox, this.harvestableGroup, (obj1, obj2) => {
       if (!this.isHarvestableCollided) {
         this.isHarvestableCollided = true
-        this.cameras.main.shake(150, 0.002)
+        this.cameras.main.shake(125, 0.002)
+        const harvestable = obj2.getData('ref') as Harvestable
+        harvestable.takeDamage()
       }
     })
   }
@@ -132,7 +137,7 @@ export default class Game extends Phaser.Scene {
     const sortedByY = this.sys.displayList
       .getChildren()
       .filter((child: any) => {
-        return child.y
+        return child.y && !this.ignoreDepthSortingNames.includes(child.name)
       })
       .sort((a: any, b: any) => {
         return a.y - b.y

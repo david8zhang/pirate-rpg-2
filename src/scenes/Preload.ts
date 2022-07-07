@@ -38,7 +38,12 @@ export default class Preload extends Scene {
     )
 
     // Harvestables
-    this.load.image('palm-tree', 'harvestables/palm-tree_without_coconut.png')
+    this.load.image(
+      'palm-tree_without_coconut',
+      'harvestables/palm-tree/palm-tree_without_coconut.png'
+    )
+    this.load.image('palm-tree_with_coconut', 'harvestables/palm-tree/palm-tree_with_coconut.png')
+    this.load.image('coconut', 'items/coconut.png')
   }
 
   create() {
