@@ -109,6 +109,7 @@ export class Harvestable {
         },
         scale: ITEM_CONFIGS[config.itemType].scale,
       })
+      this.game.addItem(newItem)
       newItem.drop()
     })
   }

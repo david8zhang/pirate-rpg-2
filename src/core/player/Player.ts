@@ -132,6 +132,10 @@ export class Player {
     return this.spriteManager.sprites
   }
 
+  getBaseSprite() {
+    return this.spriteManager.getSpriteByName('player-base')
+  }
+
   addEquipment(armorType: ArmorType, armorPiece: ArmorPiece) {
     this.equipmentManager.setArmorPiece(armorType, armorPiece)
     this.spriteManager.setSpriteTextureForKey(armorType, armorPiece.animKey)

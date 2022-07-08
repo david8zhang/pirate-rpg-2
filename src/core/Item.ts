@@ -26,7 +26,7 @@ export const ITEM_CONFIGS = {
 
 export class Item {
   private name: string
-  private sprite: Phaser.Physics.Arcade.Sprite
+  public sprite: Phaser.Physics.Arcade.Sprite
   private game: Game
   private dropLength: number
 
@@ -38,6 +38,16 @@ export class Item {
       .sprite(itemConfig.position.x, itemConfig.position.y, itemConfig.texture)
       .setScale(itemConfig.scale)
     this.sprite.setData('ref', this)
+  }
+
+  onPlayerHoverItem() {
+    const playerPosition = this.game.player.position
+    const playerDisplaySize = this.game.player.displaySize
+    this.game.hoverText.showText(
+      `(E) Pick up ${this.name}`,
+      playerPosition.x - playerDisplaySize.width,
+      playerPosition.y + 20
+    )
   }
 
   drop(launchVelocity?: number) {

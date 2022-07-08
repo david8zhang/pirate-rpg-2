@@ -7,6 +7,8 @@ import { createEquipmentAnims } from '~/anims/EquipmentAnims'
 import { ArmorType } from '~/core/player/managers/EquipmentManager'
 import { NPC } from '~/core/npc/NPC'
 import { Harvestable, HARVESTABLE_CONFIGS } from '~/core/Harvestable'
+import { HoverText } from '~/core/ui/HoverText'
+import { Item } from '~/core/Item'
 
 export default class Game extends Phaser.Scene {
   public player!: Player
@@ -16,10 +18,17 @@ export default class Game extends Phaser.Scene {
   // Map stuff
   public npcGroup!: Phaser.GameObjects.Group
   public harvestableGroup!: Phaser.GameObjects.Group
+  public itemsGroup!: Phaser.GameObjects.Group
 
   // Collider game object groups
   public isHarvestableCollided: boolean = false
   public ignoreDepthSortingNames = ['InAir', 'UI', 'Weapon', 'Structure', 'Transport', 'Effect']
+
+  // UI elements
+  public hoverText!: HoverText
+
+  // Functions to be run on every update
+  public updateHooks: Function[] = []
 
   constructor() {
     super('game')
@@ -32,6 +41,7 @@ export default class Game extends Phaser.Scene {
       'animatedTiles',
       'animatedTiles'
     )
+    this.hoverText = new HoverText(this, 0, 0)
   }
 
   create() {
@@ -41,8 +51,27 @@ export default class Game extends Phaser.Scene {
     this.initTilemap()
     this.initPlayer()
     this.initHarvestables()
+    this.initItems()
     this.cameras.main.setBounds(0, 0, Constants.GAME_WIDTH, Constants.GAME_HEIGHT)
     this.initColliders()
+  }
+
+  initItems() {
+    this.itemsGroup = this.physics.add.group({ classType: Item })
+    const basePlayerSprite = this.player.getBaseSprite()
+    this.updateHooks.push(() => {
+      if (!basePlayerSprite.body.embedded) {
+        this.hoverText.hide()
+      }
+    })
+    this.physics.add.overlap(basePlayerSprite, this.itemsGroup, (obj1, obj2) => {
+      const item = obj2.getData('ref') as Item
+      item.onPlayerHoverItem()
+    })
+  }
+
+  addItem(item: Item) {
+    this.itemsGroup.add(item.sprite)
   }
 
   initTilemap() {
@@ -131,6 +160,9 @@ export default class Game extends Phaser.Scene {
   update() {
     this.player.update()
     this.depthSort()
+    this.updateHooks.forEach((fn) => {
+      fn()
+    })
   }
 
   depthSort() {
