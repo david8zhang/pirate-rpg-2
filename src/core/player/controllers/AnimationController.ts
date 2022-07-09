@@ -1,4 +1,4 @@
-import { Direction } from './MoveController'
+import { Direction } from '~/utils/Constants'
 
 export interface AnimationControllerConfig {
   sprites: Phaser.Physics.Arcade.Sprite[]

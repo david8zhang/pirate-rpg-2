@@ -1,5 +1,5 @@
 import { State } from '~/core/StateMachine'
-import { Direction } from '../controllers/MoveController'
+import { Direction } from '~/utils/Constants'
 import { Player } from '../Player'
 
 export class IdleState extends State {

@@ -44,6 +44,9 @@ export default class Preload extends Scene {
     )
     this.load.image('palm-tree_with_coconut', 'harvestables/palm-tree/palm-tree_with_coconut.png')
     this.load.image('coconut', 'items/coconut.png')
+
+    // Mobs
+    this.load.atlas('crab', 'mobs/crab/crab.png', 'mobs/crab/crab.json')
   }
 
   create() {

@@ -8,7 +8,7 @@ export class HoverText {
       fontSize: '20px',
       fontFamily: 'GraphicPixel',
       color: 'white',
-      strokeThickness: 4,
+      strokeThickness: 5,
       stroke: 'black',
     })
     this.text.setName('UI')

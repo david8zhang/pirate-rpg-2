@@ -1,27 +1,24 @@
 import Game from '~/scenes/Game'
+import { EntityConfig } from '~/utils/Constants'
 import { ArmorType } from './EquipmentManager'
-import { Player, PlayerConfig } from '../Player'
 
 export interface SpriteManagerConfig {
-  player: Player
   game: Game
-  playerConfig: PlayerConfig
+  config: EntityConfig
 }
 
 export class SpriteManager {
-  private player: Player
   private game: Game
   // Mapping of each character piece to a sprite animation key
   public spriteMapping: any = {}
 
   constructor(config: SpriteManagerConfig) {
-    this.player = config.player
     this.game = config.game
-    this.setupSprites(config.playerConfig)
+    this.setupSprites(config.config)
   }
 
-  setupSprites(config: PlayerConfig) {
-    const spriteKeyMapping = this.getSpriteMapping()
+  setupSprites(config: EntityConfig) {
+    const spriteKeyMapping = config.spriteMapping
     Object.keys(spriteKeyMapping).forEach((key, index) => {
       const spriteKey = spriteKeyMapping[key]
       const sprite = this.addSprite(config, spriteKey, index + 1)
@@ -30,26 +27,15 @@ export class SpriteManager {
       }
       this.spriteMapping[key] = sprite
     })
-    this.game.cameras.main.startFollow(this.spriteMapping[ArmorType.BASE])
   }
 
-  addSprite(config: PlayerConfig, spriteKey: string, depth: number): Phaser.Physics.Arcade.Sprite {
+  addSprite(config: EntityConfig, spriteKey: string, depth: number): Phaser.Physics.Arcade.Sprite {
     const sprite = this.game.physics.add
       .sprite(config.position.x, config.position.y, spriteKey)
       .setScale(config.scale.x, config.scale.y)
       .setDepth(depth)
     this.game.physics.world.enableBody(sprite, Phaser.Physics.Arcade.DYNAMIC_BODY)
     return sprite
-  }
-
-  getSpriteMapping() {
-    return {
-      [ArmorType.BASE]: 'player-base',
-      [ArmorType.ARMS]: 'player-arms',
-      [ArmorType.LEGS]: '',
-      [ArmorType.HEAD]: '',
-      [ArmorType.CHEST]: '',
-    }
   }
 
   getSpriteByName(name: string) {

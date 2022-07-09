@@ -9,22 +9,7 @@ import { AttackState } from './states/AttackState'
 import { ArmorPiece, ArmorType, EquipmentManager } from './managers/EquipmentManager'
 import { SpriteManager } from './managers/SpriteManager'
 import { ColliderController } from './controllers/ColliderController'
-
-export interface PlayerConfig {
-  position: {
-    x: number
-    y: number
-  }
-  scale: {
-    x: number
-    y: number
-  }
-  body: {
-    x: number
-    y: number
-  }
-  layersToCollideWith?: string[]
-}
+import { EntityConfig } from '~/utils/Constants'
 
 export class Player {
   public game: Game
@@ -40,7 +25,7 @@ export class Player {
   public attackController!: AttackController
   public colliderController!: ColliderController
 
-  constructor(game: Game, config: PlayerConfig) {
+  constructor(game: Game, config: EntityConfig) {
     this.game = game
     this.setupManagers(game, config)
     this.setupControllers(game, config)
@@ -53,21 +38,21 @@ export class Player {
       },
       [this]
     )
+    this.getBaseSprite().setData('ref', this)
   }
 
-  setupManagers(game: Game, config: PlayerConfig) {
+  setupManagers(game: Game, config: EntityConfig) {
     this.equipmentManager = new EquipmentManager({
       player: this,
       game,
     })
     this.spriteManager = new SpriteManager({
-      playerConfig: config,
-      player: this,
+      config,
       game,
     })
   }
 
-  setupControllers(game: Game, config: PlayerConfig) {
+  setupControllers(game: Game, config: EntityConfig) {
     this.equipmentManager = new EquipmentManager({
       player: this,
       game,
@@ -79,10 +64,6 @@ export class Player {
       player: this,
       game,
       playerConfig: config,
-      colliderConfig: {
-        width: 32,
-        height: 32,
-      },
     })
     this.moveController = new MoveController({
       player: this,

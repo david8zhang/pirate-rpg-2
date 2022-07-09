@@ -45,7 +45,7 @@ export const HARVESTABLE_CONFIGS = {
       yOffset: 50,
     },
     scale: 2,
-    droppedItems: [
+    dropItems: [
       {
         itemType: ItemTypes.COCONUT,
         quantity: 2,

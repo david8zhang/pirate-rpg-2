@@ -1,5 +1,11 @@
-import { HarvestableTypes } from '~/core/Harvestable'
-import { Direction } from '~/core/player/controllers/MoveController'
+import { HarvestableTypes } from '~/core/object/Harvestable'
+
+export enum Direction {
+  RIGHT = 'RIGHT',
+  LEFT = 'LEFT',
+  DOWN = 'DOWN',
+  UP = 'UP',
+}
 
 export interface GameConfig {
   npcConfig?: {
@@ -14,6 +20,29 @@ export interface GameConfig {
   }[]
 }
 
+export interface EntityConfig {
+  health: number
+  speed: number
+  position: {
+    x: number
+    y: number
+  }
+  scale: {
+    x: number
+    y: number
+  }
+  body: {
+    width: number
+    height: number
+    offsetX?: number
+    offsetY?: number
+  }
+  layersToCollideWith?: string[]
+  spriteMapping: {
+    [key: string]: string
+  }
+}
+
 export class Constants {
   public static GAME_CONFIG: GameConfig = {
     harvestableConfig: [
@@ -23,8 +52,6 @@ export class Constants {
       },
     ],
   }
-
-  public static PLAYER_SPEED = 200
   public static SCREEN_WIDTH = 1200
   public static SCREEN_HEIGHT = 900
 

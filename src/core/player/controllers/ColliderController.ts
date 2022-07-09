@@ -1,15 +1,11 @@
 import Game from '~/scenes/Game'
-import { Direction } from './MoveController'
-import { Player, PlayerConfig } from '../Player'
+import { Player } from '../Player'
+import { Direction, EntityConfig } from '~/utils/Constants'
 
 export interface ColliderControllerConfig {
   player: Player
   game: Game
-  playerConfig: PlayerConfig
-  colliderConfig: {
-    width: number
-    height: number
-  }
+  playerConfig: EntityConfig
 }
 
 export class ColliderController {
@@ -18,7 +14,7 @@ export class ColliderController {
   public attackHitbox: Phaser.Physics.Arcade.Sprite
 
   constructor(config: ColliderControllerConfig) {
-    const { player, game, colliderConfig, playerConfig } = config
+    const { player, game, playerConfig } = config
     this.player = player
     this.game = game
     this.attackHitbox = this.game.physics.add
@@ -27,10 +23,10 @@ export class ColliderController {
       .setDebug(false, false, 0x00ff00)
 
     this.setupLayerColliders(playerConfig)
-    this.configureBodySize()
+    this.configureBodySize(playerConfig.body)
   }
 
-  setupLayerColliders(playerConfig: PlayerConfig) {
+  setupLayerColliders(playerConfig: EntityConfig) {
     const { layersToCollideWith } = playerConfig
     if (layersToCollideWith) {
       layersToCollideWith.forEach((layer: string) => {
@@ -45,11 +41,16 @@ export class ColliderController {
     }
   }
 
-  configureBodySize() {
+  configureBodySize(body: { width: number; height: number; offsetX?: number; offsetY?: number }) {
     const sprites = this.player.getSprites()
     sprites.forEach((sprite) => {
-      sprite.body.setSize(10, 10)
-      sprite.body.offset.y += 12
+      sprite.body.setSize(body.width, body.height)
+      if (body.offsetY) {
+        sprite.body.offset.y += body.offsetY
+      }
+      if (body.offsetX) {
+        sprite.body.offset.x += body.offsetX
+      }
     })
   }
 

@@ -4,7 +4,7 @@ import { Player } from '../Player'
 export class MoveState extends State {
   execute(player: Player) {
     const moveController = player.moveController
-    moveController.handlePlayerMovement()
+    moveController.handleMovement()
 
     if (player.attackController && player.attackController.detectAttack()) {
       this.stateMachine.transition('attack')

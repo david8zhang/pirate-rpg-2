@@ -1,20 +1,20 @@
 import Game from '~/scenes/Game'
-import { Constants } from '~/utils/Constants'
+import { PLAYER_CONFIG } from '~/utils/configs/player'
+import { Constants, Direction } from '~/utils/Constants'
 import { Player } from '../Player'
-
-export enum Direction {
-  RIGHT = 'RIGHT',
-  LEFT = 'LEFT',
-  DOWN = 'DOWN',
-  UP = 'UP',
-}
 
 export interface MoveControllerConfig {
   player: Player
   game: Game
 }
 
-export class MoveController {
+export interface MoveControllerInterface {
+  detectMovement(): boolean
+  stop(): void
+  handleMovement(): void
+}
+
+export class MoveController implements MoveControllerInterface {
   private game: Game
   private player: Player
 
@@ -56,7 +56,7 @@ export class MoveController {
     })
   }
 
-  handlePlayerMovement() {
+  handleMovement() {
     if (!this.keyA || !this.keyD || !this.keyW || !this.keyS) {
       return
     }
@@ -66,7 +66,7 @@ export class MoveController {
     const upDown = this.keyW.isDown
     const downDown = this.keyS.isDown
 
-    const speed = Constants.PLAYER_SPEED
+    const speed = PLAYER_CONFIG.speed
     const sprites = this.player.getSprites()
 
     if (leftDown || rightDown) {

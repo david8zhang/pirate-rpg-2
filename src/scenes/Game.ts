@@ -1,14 +1,18 @@
 import Phaser from 'phaser'
 import { Player } from '../core/player/Player'
 import { Map } from '~/core/map/Map'
-import { Constants } from '~/utils/Constants'
+import { Constants, EntityConfig } from '~/utils/Constants'
 import { createPlayerArmsAnims, createPlayerBaseAnims } from '~/anims/PlayerAnims'
 import { createEquipmentAnims } from '~/anims/EquipmentAnims'
 import { ArmorType } from '~/core/player/managers/EquipmentManager'
 import { NPC } from '~/core/npc/NPC'
-import { Harvestable, HARVESTABLE_CONFIGS } from '~/core/Harvestable'
+import { Harvestable, HARVESTABLE_CONFIGS } from '~/core/object/Harvestable'
 import { HoverText } from '~/core/ui/HoverText'
-import { Item } from '~/core/Item'
+import { Item } from '~/core/object/Item'
+import { PLAYER_CONFIG } from '~/utils/configs/player'
+import { createMobAnims } from '~/anims/MobAnims'
+import { Mob } from '~/core/mob/Mob'
+import { CRAB_CONFIG } from '~/utils/configs/mobs'
 
 export default class Game extends Phaser.Scene {
   public player!: Player
@@ -48,10 +52,12 @@ export default class Game extends Phaser.Scene {
     createPlayerBaseAnims(this.anims)
     createPlayerArmsAnims(this.anims)
     createEquipmentAnims(this.anims)
+    createMobAnims(this.anims)
     this.initTilemap()
     this.initPlayer()
     this.initHarvestables()
     this.initItems()
+    this.initMobs()
     this.cameras.main.setBounds(0, 0, Constants.GAME_WIDTH, Constants.GAME_HEIGHT)
     this.initColliders()
   }
@@ -83,18 +89,15 @@ export default class Game extends Phaser.Scene {
       const spawnLayer = this.map.tileMap.getObjectLayer('Spawn')
       const spawnPoint = spawnLayer.objects.find((object) => object.name === 'spawn-point')
       if (spawnPoint) {
-        this.player = new Player(this, {
+        const config: EntityConfig = {
+          ...PLAYER_CONFIG,
           position: {
             x: spawnPoint.x as number,
             y: spawnPoint.y as number,
           },
-          scale: { x: 2, y: 2 },
-          body: {
-            x: 0.2,
-            y: 0.2,
-          },
-          layersToCollideWith: ['Ocean'],
-        })
+        }
+        this.player = new Player(this, config)
+        this.cameras.main.startFollow(this.player.getBaseSprite())
 
         // Add equipment
         this.player.addEquipment(ArmorType.HEAD, { animKey: 'red-bandana' })
@@ -134,11 +137,8 @@ export default class Game extends Phaser.Scene {
       allHarvestables.forEach((config) => {
         const harvestableConfig = HARVESTABLE_CONFIGS[config.harvestableType]
         const harvestable = new Harvestable(this, {
-          textures: harvestableConfig.textures,
+          ...harvestableConfig,
           position: config.position,
-          hitbox: harvestableConfig.hitbox,
-          scale: harvestableConfig.scale,
-          dropItems: harvestableConfig.droppedItems,
         })
         this.harvestableGroup.add(harvestable.sprite)
       })
@@ -154,6 +154,20 @@ export default class Game extends Phaser.Scene {
         const harvestable = obj2.getData('ref') as Harvestable
         harvestable.takeDamage()
       }
+    })
+  }
+
+  initMobs() {
+    const basePlayerSprite = this.player.getBaseSprite()
+    const crab = new Mob(this, {
+      ...CRAB_CONFIG,
+      position: {
+        x: basePlayerSprite.x,
+        y: basePlayerSprite.y + 10,
+      },
+    })
+    this.updateHooks.push(() => {
+      crab.update()
     })
   }
 
