@@ -1,62 +1,7 @@
 import Game from '~/scenes/Game'
-import { Item, ItemTypes, ITEM_CONFIGS } from './Item'
-
-interface ItemDrop {
-  itemType: ItemTypes
-  quantity: number
-  relativePosition?: {
-    y: number
-    x: number
-  }
-}
-
-interface HarvestableConfig {
-  textures: {
-    withDrop: string
-    withoutDrop: string
-  }
-  position: {
-    x: number
-    y: number
-  }
-  hitbox: {
-    width: number
-    height: number
-    xOffset?: number
-    yOffset?: number
-  }
-  scale?: number
-  dropItems: ItemDrop[]
-}
-
-export enum HarvestableTypes {
-  PALM_TREE = 'Palm Tree',
-}
-
-export const HARVESTABLE_CONFIGS = {
-  [HarvestableTypes.PALM_TREE]: {
-    textures: {
-      withDrop: 'palm-tree_with_coconut',
-      withoutDrop: 'palm-tree_without_coconut',
-    },
-    hitbox: {
-      width: 32,
-      height: 20,
-      yOffset: 50,
-    },
-    scale: 2,
-    dropItems: [
-      {
-        itemType: ItemTypes.COCONUT,
-        quantity: 2,
-        relativePosition: {
-          y: -75,
-          x: 0,
-        },
-      },
-    ],
-  },
-}
+import { HarvestableConfig } from '~/utils/configs/harvestables'
+import { ITEM_CONFIGS } from '~/utils/configs/items'
+import { Item } from './Item'
 
 export class Harvestable {
   private game: Game
@@ -96,18 +41,17 @@ export class Harvestable {
   }
 
   dropItems() {
-    this.config.dropItems.forEach((config) => {
-      const xDiff = config.relativePosition ? config.relativePosition.x : 0
-      const yDiff = config.relativePosition ? config.relativePosition.y : 0
+    this.config.dropItems.forEach((dropItemConfig) => {
+      const xDiff = dropItemConfig.relativePosition ? dropItemConfig.relativePosition.x : 0
+      const yDiff = dropItemConfig.relativePosition ? dropItemConfig.relativePosition.y : 0
+      const detailedItemConfig = ITEM_CONFIGS[dropItemConfig.itemType]
       const newItem = new Item(this.game, {
-        name: config.itemType,
-        dropLength: ITEM_CONFIGS[config.itemType].dropLength,
-        texture: ITEM_CONFIGS[config.itemType].texture,
+        ...detailedItemConfig,
+        name: dropItemConfig.itemType,
         position: {
           x: this.sprite.x + xDiff,
           y: this.sprite.y + yDiff,
         },
-        scale: ITEM_CONFIGS[config.itemType].scale,
       })
       this.game.addItem(newItem)
       newItem.drop()

@@ -6,13 +6,14 @@ import { createPlayerArmsAnims, createPlayerBaseAnims } from '~/anims/PlayerAnim
 import { createEquipmentAnims } from '~/anims/EquipmentAnims'
 import { ArmorType } from '~/core/player/managers/EquipmentManager'
 import { NPC } from '~/core/npc/NPC'
-import { Harvestable, HARVESTABLE_CONFIGS } from '~/core/object/Harvestable'
+import { Harvestable } from '~/core/object/Harvestable'
 import { HoverText } from '~/core/ui/HoverText'
 import { Item } from '~/core/object/Item'
 import { PLAYER_CONFIG } from '~/utils/configs/player'
 import { createMobAnims } from '~/anims/MobAnims'
 import { Mob } from '~/core/mob/Mob'
 import { CRAB_CONFIG } from '~/utils/configs/mobs'
+import { HARVESTABLE_CONFIGS } from '~/utils/configs/harvestables'
 
 export default class Game extends Phaser.Scene {
   public player!: Player
@@ -55,13 +56,17 @@ export default class Game extends Phaser.Scene {
     createPlayerArmsAnims(this.anims)
     createEquipmentAnims(this.anims)
     createMobAnims(this.anims)
+    this.configureCamera()
     this.initTilemap()
     this.initPlayer()
     this.initHarvestables()
     this.initItems()
     this.initMobs()
-    this.cameras.main.setBounds(0, 0, Constants.GAME_WIDTH, Constants.GAME_HEIGHT)
     this.initColliders()
+  }
+
+  configureCamera() {
+    this.cameras.main.setBounds(0, 0, Constants.GAME_WIDTH, Constants.GAME_HEIGHT)
   }
 
   initItems() {
@@ -70,6 +75,7 @@ export default class Game extends Phaser.Scene {
     this.updateHooks.push(() => {
       if (!basePlayerSprite.body.embedded) {
         this.hoverText.hide()
+        this.player.itemOnHover = null
       }
     })
     this.physics.add.overlap(basePlayerSprite, this.itemsGroup, (obj1, obj2) => {
@@ -80,6 +86,10 @@ export default class Game extends Phaser.Scene {
 
   addItem(item: Item) {
     this.itemsGroup.add(item.sprite)
+  }
+
+  removeItem(item: Item) {
+    item.destroy()
   }
 
   initTilemap() {
@@ -154,7 +164,7 @@ export default class Game extends Phaser.Scene {
       ...CRAB_CONFIG,
       position: {
         x: basePlayerSprite.x,
-        y: basePlayerSprite.y + 10,
+        y: basePlayerSprite.y + 100,
       },
     })
     this.mobGroup.add(crab.getBaseSprite())

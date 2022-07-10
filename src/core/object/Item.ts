@@ -1,31 +1,8 @@
 import Game from '~/scenes/Game'
-
-export interface ItemConfig {
-  name: string
-  dropLength: number
-  texture: string
-  position: {
-    x: number
-    y: number
-  }
-  scale: number
-}
-
-export enum ItemTypes {
-  COCONUT = 'Coconut',
-}
-
-export const ITEM_CONFIGS = {
-  [ItemTypes.COCONUT]: {
-    name: ItemTypes.COCONUT,
-    dropLength: 950,
-    texture: 'coconut',
-    scale: 2,
-  },
-}
+import { ItemConfig } from '~/utils/configs/items'
 
 export class Item {
-  private name: string
+  public name: string
   public sprite: Phaser.Physics.Arcade.Sprite
   private game: Game
   private dropLength: number
@@ -48,6 +25,7 @@ export class Item {
       playerPosition.x - playerDisplaySize.width,
       playerPosition.y + 20
     )
+    this.game.player.itemOnHover = this
   }
 
   drop(launchVelocity?: number) {
@@ -76,5 +54,9 @@ export class Item {
         this.sprite.setName('')
       })
     })
+  }
+
+  destroy() {
+    this.sprite.destroy()
   }
 }

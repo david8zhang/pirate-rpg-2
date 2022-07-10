@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import { Plugin as NineSlicePlugin } from 'phaser3-nineslice'
 
 import Game from './scenes/Game'
 import Preload from './scenes/Preload'
@@ -7,15 +8,17 @@ import { Constants } from './utils/Constants'
 import { GameUI } from './scenes/GameUI'
 
 const config: Phaser.Types.Core.GameConfig = {
+  antialias: false,
   type: Phaser.AUTO,
   width: Constants.SCREEN_WIDTH,
   height: Constants.SCREEN_HEIGHT,
   parent: 'phaser',
+  roundPixels: true,
   physics: {
     default: 'arcade',
     arcade: {
       gravity: { x: 0, y: 0 },
-      debug: true,
+      // debug: true,
     },
   },
   dom: {
@@ -28,6 +31,7 @@ const config: Phaser.Types.Core.GameConfig = {
   },
   scene: [Preload, Game, GameUI],
   plugins: {
+    global: [NineSlicePlugin.DefaultCfg],
     scene: [
       {
         key: 'rexUI',

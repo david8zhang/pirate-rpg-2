@@ -6,21 +6,38 @@ export default class Preload extends Scene {
   }
 
   preload() {
-    // random icons
+    this.loadUIImages()
+    this.loadIcons()
+    this.loadTilemaps()
+    this.loadCharacter()
+    this.loadEquipment()
+    this.loadHarvestables()
+    this.loadMobs()
+    this.loadWeapons()
+  }
+
+  loadUIImages() {
+    this.load.image('panel', 'ui/grey_panel.png')
+  }
+
+  loadIcons() {
     this.load.image(
       'nextPage',
       'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/assets/images/arrow-down-left.png'
     )
+  }
 
-    // Tilemaps
+  loadTilemaps() {
     this.load.tilemapTiledJSON('intro-island', 'tiles/intro-island.json')
     this.load.image('pirate-rpg-tiles', 'tiles/pirate-rpg-tiles.png')
+  }
 
-    // Main character animations
+  loadCharacter() {
     this.load.atlas('player-base', 'character/base.png', 'character/base.json')
     this.load.atlas('player-arms', 'character/base-arms.png', 'character/base-arms.json')
+  }
 
-    // Equipment
+  loadEquipment() {
     this.load.atlas(
       'leather-vest',
       'equipment/chest/leather-vest/leather-vest.png',
@@ -36,17 +53,26 @@ export default class Preload extends Scene {
       'equipment/head/red-bandana/red-bandana.png',
       'equipment/head/red-bandana/red-bandana.json'
     )
+  }
 
-    // Harvestables
+  loadHarvestables() {
     this.load.image(
       'palm-tree_without_coconut',
       'harvestables/palm-tree/palm-tree_without_coconut.png'
     )
     this.load.image('palm-tree_with_coconut', 'harvestables/palm-tree/palm-tree_with_coconut.png')
     this.load.image('coconut', 'items/coconut.png')
+  }
 
-    // Mobs
+  loadMobs() {
     this.load.atlas('crab', 'mobs/crab/crab.png', 'mobs/crab/crab.json')
+  }
+
+  loadWeapons() {
+    this.load.image('stone-axe-diag', 'equipment/weapons/stone-axe/axe-diag.png')
+    this.load.image('stone-axe', 'equipment/weapons/stone-axe/axe.png')
+    this.load.image('slash-1', 'weapons/effects/slash-1.png')
+    this.load.image('slash-2', 'weapons/effects/slash-2.png')
   }
 
   create() {

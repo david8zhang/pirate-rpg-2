@@ -1,4 +1,4 @@
-import { HarvestableTypes } from '~/core/object/Harvestable'
+import { HarvestableTypes } from './configs/harvestables'
 
 export enum Direction {
   RIGHT = 'RIGHT',
