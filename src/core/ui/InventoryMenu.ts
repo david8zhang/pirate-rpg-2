@@ -5,9 +5,9 @@ import { text } from './components/Text'
 
 export class ItemBox {
   // Dimensions
-  public static WIDTH = 30
-  public static HEIGHT = 30
-  public static PADDING_WITHIN_BOX = 20
+  public static WIDTH = 22
+  public static HEIGHT = 22
+  public static PADDING_WITHIN_BOX = 10
 
   // Item contained inside
   private sprite!: Phaser.GameObjects.Sprite
@@ -52,15 +52,15 @@ export class ItemBox {
       .on('pointerout', this.handleItemExitHover, this)
       .on('pointerdown', this.onItemClick, this)
 
-    this.sprite = scene.add.sprite(xPos, yPos, '').setScale(2)
+    this.sprite = scene.add.sprite(xPos, yPos, '').setScale(1)
     this.sprite.setVisible(false)
 
-    this.container = scene.add.container(35, 35)
+    this.container = scene.add.container(25, 25)
     this.container.add(this.panel)
     this.container.add(this.sprite)
     if (!disableCount) {
-      const countText = text('', { fontSize: '15', fontFamily: 'GraphicPixel', color: 'white' })
-      this.countText = scene.add.dom(xPos + 10, yPos - 10, countText).setOrigin(0)
+      const countText = text('', { fontSize: '10px', fontFamily: 'GraphicPixel', color: 'white' })
+      this.countText = scene.add.dom(xPos + 5, yPos - 5, countText).setOrigin(0)
       this.container.add(this.countText)
     }
   }
@@ -192,7 +192,7 @@ export class InventoryMenu {
   }
 
   public initialize() {
-    const paddingBetweenBox = 25
+    const paddingBetweenBox = 12
     for (let i = 0; i < this.numRows; i++) {
       const yPos = i * (ItemBox.WIDTH + paddingBetweenBox)
       this.itemBoxes[i] = new Array(this.numCols)

@@ -13,6 +13,8 @@ export class GameUI extends Phaser.Scene {
     GameUI._instance = this
   }
 
+  create() {}
+
   preload() {
     this.initializeInventory()
   }

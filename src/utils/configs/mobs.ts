@@ -22,8 +22,8 @@ export const CRAB_CONFIG: MobConfig = {
     BASE: 'crab',
   },
   scale: {
-    x: 2,
-    y: 2,
+    x: 1,
+    y: 1,
   },
   body: {
     height: 10,

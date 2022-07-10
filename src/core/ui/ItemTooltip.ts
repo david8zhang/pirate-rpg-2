@@ -10,7 +10,7 @@ export enum TooltipPosition {
 }
 
 export class ItemTooltip {
-  private width = 250
+  private width = 125
   private height = 20
   private container: Phaser.GameObjects.Container
   private itemNameText: Phaser.GameObjects.Text
@@ -24,11 +24,11 @@ export class ItemTooltip {
     this.container = scene.add.container(x, y)
     this.scene = scene
     this.rectangle = scene.add
-      .rectangle(x - 5, y - 5, this.width, 100, 0x000000, 0.5)
+      .rectangle(x - 5, y - 5, this.width, 50, 0x000000, 0.5)
       .setOrigin(0, 0)
     this.itemNameText = scene.add
       .text(x, y, '', {
-        fontSize: '18px',
+        fontSize: '12px',
         align: 'left',
         fontFamily: 'GraphicPixel',
         color: 'white',
@@ -37,7 +37,7 @@ export class ItemTooltip {
 
     this.itemDescriptionText = scene.add
       .text(x, y + this.itemNameText.height + 5, '', {
-        fontSize: '14px',
+        fontSize: '10px',
         align: 'left',
         fontFamily: 'GraphicPixel',
         color: 'white',

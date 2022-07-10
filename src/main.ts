@@ -13,7 +13,6 @@ const config: Phaser.Types.Core.GameConfig = {
   width: Constants.SCREEN_WIDTH,
   height: Constants.SCREEN_HEIGHT,
   parent: 'phaser',
-  roundPixels: true,
   physics: {
     default: 'arcade',
     arcade: {

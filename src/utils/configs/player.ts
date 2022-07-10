@@ -3,12 +3,12 @@ import { EntityConfig } from '../Constants'
 
 export const PLAYER_CONFIG: EntityConfig = {
   health: 100,
-  speed: 200,
+  speed: 100,
   position: {
     x: 0,
     y: 0,
   },
-  scale: { x: 2, y: 2 },
+  scale: { x: 1, y: 1 },
   body: {
     width: 10,
     height: 10,

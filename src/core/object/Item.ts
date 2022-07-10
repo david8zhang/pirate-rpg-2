@@ -36,7 +36,7 @@ export class Item {
     const randLaunchAngle = Math.random() * -60 + -60
     this.game.physics.velocityFromAngle(
       randLaunchAngle,
-      launchVelocity || 150,
+      launchVelocity || 100,
       this.sprite.body.velocity
     )
 
@@ -46,9 +46,9 @@ export class Item {
       this.sprite.setVelocity(0)
 
       // Do it agian for a "bounce" effect
-      this.game.physics.velocityFromAngle(-100, 75, this.sprite.body.velocity)
+      this.game.physics.velocityFromAngle(-100, 30, this.sprite.body.velocity)
       this.sprite.setGravityY(500)
-      this.game.time.delayedCall(200, () => {
+      this.game.time.delayedCall(150, () => {
         this.sprite.setGravity(0)
         this.sprite.setVelocity(0)
         this.sprite.setName('')

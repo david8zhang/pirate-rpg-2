@@ -67,6 +67,7 @@ export default class Game extends Phaser.Scene {
 
   configureCamera() {
     this.cameras.main.setBounds(0, 0, Constants.GAME_WIDTH, Constants.GAME_HEIGHT)
+    this.cameras.main.setRoundPixels(true)
   }
 
   initItems() {
