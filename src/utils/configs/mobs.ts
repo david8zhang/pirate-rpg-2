@@ -27,7 +27,8 @@ export const CRAB_CONFIG: MobConfig = {
   },
   body: {
     height: 10,
-    width: 10,
+    width: 15,
+    offsetY: 2,
   },
   animations: [
     {

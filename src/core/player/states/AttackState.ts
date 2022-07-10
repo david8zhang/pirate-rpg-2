@@ -12,6 +12,7 @@ export class AttackState extends State {
         this.stateMachine.transition('idle')
         player.colliderController.deactivateAttackHitbox()
         player.game.isHarvestableCollided = false
+        player.game.isMobCollided = false
       })
     }
   }

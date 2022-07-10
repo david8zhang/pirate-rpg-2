@@ -8,6 +8,16 @@ export interface ColliderControllerConfig {
   playerConfig: EntityConfig
 }
 
+export interface ColliderControllerInterface {
+  setupLayerColliders(config: EntityConfig): void
+  configureBodySize(body: {
+    width: number
+    height: number
+    offsetX?: number
+    offsetY?: number
+  }): void
+}
+
 export class ColliderController {
   private player: Player
   private game: Game

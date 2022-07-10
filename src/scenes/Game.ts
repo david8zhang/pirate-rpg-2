@@ -23,9 +23,11 @@ export default class Game extends Phaser.Scene {
   public npcGroup!: Phaser.GameObjects.Group
   public harvestableGroup!: Phaser.GameObjects.Group
   public itemsGroup!: Phaser.GameObjects.Group
+  public mobGroup!: Phaser.GameObjects.Group
 
   // Collider game object groups
   public isHarvestableCollided: boolean = false
+  public isMobCollided: boolean = false
   public ignoreDepthSortingNames = ['InAir', 'UI', 'Weapon', 'Structure', 'Transport', 'Effect']
 
   // UI elements
@@ -145,6 +147,22 @@ export default class Game extends Phaser.Scene {
     }
   }
 
+  initMobs() {
+    this.mobGroup = this.add.group()
+    const basePlayerSprite = this.player.getBaseSprite()
+    const crab = new Mob(this, {
+      ...CRAB_CONFIG,
+      position: {
+        x: basePlayerSprite.x,
+        y: basePlayerSprite.y + 10,
+      },
+    })
+    this.mobGroup.add(crab.getBaseSprite())
+    this.updateHooks.push(() => {
+      crab.update()
+    })
+  }
+
   initColliders() {
     // Harvestable colliders
     this.physics.add.collider(this.player.attackHitbox, this.harvestableGroup, (obj1, obj2) => {
@@ -155,19 +173,12 @@ export default class Game extends Phaser.Scene {
         harvestable.takeDamage()
       }
     })
-  }
-
-  initMobs() {
-    const basePlayerSprite = this.player.getBaseSprite()
-    const crab = new Mob(this, {
-      ...CRAB_CONFIG,
-      position: {
-        x: basePlayerSprite.x,
-        y: basePlayerSprite.y + 10,
-      },
-    })
-    this.updateHooks.push(() => {
-      crab.update()
+    this.physics.add.collider(this.player.attackHitbox, this.mobGroup, (obj1, obj2) => {
+      if (!this.isMobCollided) {
+        this.isMobCollided = true
+        this.cameras.main.shake(125, 0.002)
+        const mob = obj2.getData('ref') as Mob
+      }
     })
   }
 

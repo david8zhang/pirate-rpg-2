@@ -2,8 +2,10 @@ import Game from '~/scenes/Game'
 import { MobConfig } from '~/utils/configs/mobs'
 import { Direction } from '~/utils/Constants'
 import { AnimationController } from '../player/controllers/AnimationController'
+import { ColliderController } from '../player/controllers/ColliderController'
 import { SpriteManager } from '../player/managers/SpriteManager'
 import { StateMachine } from '../StateMachine'
+import { MobColliderController } from './controllers/MobColliderController'
 import { MobMoveController } from './controllers/MobMoveController'
 import { IdleState } from './states/IdleState'
 
@@ -12,6 +14,7 @@ export class Mob {
   public spriteManager!: SpriteManager
   public animController!: AnimationController
   public moveController!: MobMoveController
+  public colliderController!: MobColliderController
   public stateMachine: StateMachine
 
   constructor(game: Game, config: MobConfig) {
@@ -40,6 +43,11 @@ export class Mob {
       game,
       config,
       mob: this,
+    })
+    this.colliderController = new MobColliderController({
+      game,
+      mob: this,
+      mobConfig: config,
     })
   }
 

@@ -52,8 +52,8 @@ export class Constants {
       },
     ],
   }
-  public static SCREEN_WIDTH = 1200
-  public static SCREEN_HEIGHT = 900
+  public static SCREEN_WIDTH = 900
+  public static SCREEN_HEIGHT = 600
 
   public static MAP_WIDTH = 100
   public static MAP_HEIGHT = 100
