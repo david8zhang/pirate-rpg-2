@@ -10,20 +10,17 @@ import { ArmorPiece, ArmorType, EquipmentManager } from './managers/EquipmentMan
 import { SpriteManager } from './managers/SpriteManager'
 import { ColliderController } from './controllers/ColliderController'
 import { EntityConfig } from '~/utils/Constants'
-import { GameUI } from '~/scenes/GameUI'
-import { Inventory } from './Inventory'
 import { Item } from '../object/Item'
-import { ItemBox } from '../ui/InventoryMenu'
+import { InventoryManager } from './managers/InventoryManager'
 
 export class Player {
-  public inventory: Inventory
-
   public game: Game
   public stateMachine: StateMachine
 
   // Store states
   public equipmentManager!: EquipmentManager
   public spriteManager!: SpriteManager
+  public inventoryManager!: InventoryManager
 
   // Writes states, or mutates state in some way
   public moveController!: MoveController
@@ -48,21 +45,6 @@ export class Player {
       [this]
     )
     this.getBaseSprite().setData('ref', this)
-
-    // Inventory management
-    this.inventory = {}
-    this.game.input.keyboard.on('keydown', (keycode: any) => {
-      if (keycode.code === 'KeyI') {
-        GameUI.instance.inventoryMenu.toggleInventoryExpand()
-      }
-      if (keycode.code === 'KeyE') {
-        if (this.itemOnHover) {
-          this.addItem(this.itemOnHover)
-          this.game.removeItem(this.itemOnHover)
-          this.itemOnHover = null
-        }
-      }
-    })
   }
 
   setupManagers(game: Game, config: EntityConfig) {
@@ -72,6 +54,10 @@ export class Player {
     })
     this.spriteManager = new SpriteManager({
       config,
+      game,
+    })
+    this.inventoryManager = new InventoryManager({
+      player: this,
       game,
     })
   }
@@ -147,25 +133,11 @@ export class Player {
   }
 
   handleHoverItem(item: Item) {
-    this.itemOnHover = item
+    this.inventoryManager.handleHoverItem(item)
   }
 
-  addItem(item: Item) {
-    if (!this.inventory[item.name]) {
-      this.inventory[item.name] = {
-        count: 0,
-        texture: item.sprite.texture.key,
-      }
-    }
-    this.inventory[item.name].count++
-    GameUI.instance.inventoryMenu.updateInventoryMenu(
-      this.inventory,
-      (itemName: string, itemBox: ItemBox) => this.handleItemClick(itemName)
-    )
-  }
-
-  handleItemClick(itemName: string) {
-    console.log('Clicked item!', itemName)
+  handleUnhoverItem() {
+    this.inventoryManager.handleUnhoverItem()
   }
 
   public stop() {

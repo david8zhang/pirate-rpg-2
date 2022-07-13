@@ -76,7 +76,7 @@ export default class Game extends Phaser.Scene {
     this.updateHooks.push(() => {
       if (!basePlayerSprite.body.embedded) {
         this.hoverText.hide()
-        this.player.itemOnHover = null
+        this.player.handleUnhoverItem()
       }
     })
     this.physics.add.overlap(basePlayerSprite, this.itemsGroup, (obj1, obj2) => {

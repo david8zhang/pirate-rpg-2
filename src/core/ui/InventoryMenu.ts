@@ -1,7 +1,7 @@
-import { Inventory } from '../player/Inventory'
 import { GameUI } from '~/scenes/GameUI'
 import { TooltipPosition } from './ItemTooltip'
 import { text } from './components/Text'
+import { Inventory } from '../player/managers/InventoryManager'
 
 export class ItemBox {
   // Dimensions

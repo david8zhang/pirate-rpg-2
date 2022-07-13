@@ -25,7 +25,7 @@ export class Item {
       playerPosition.x - playerDisplaySize.width,
       playerPosition.y + 20
     )
-    this.game.player.itemOnHover = this
+    this.game.player.handleHoverItem(this)
   }
 
   drop(launchVelocity?: number) {

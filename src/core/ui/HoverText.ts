@@ -5,7 +5,7 @@ export class HoverText {
   isVisible: boolean = false
   constructor(scene: Game, x: number, y: number) {
     this.text = scene.add.text(x, y, '', {
-      fontSize: '12px',
+      fontSize: '10px',
       fontFamily: 'GraphicPixel',
       color: 'white',
       strokeThickness: 2,
