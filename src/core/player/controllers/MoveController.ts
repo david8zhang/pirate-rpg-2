@@ -25,7 +25,7 @@ export class MoveController implements MoveControllerInterface {
   private keyD!: Phaser.Input.Keyboard.Key
 
   // Direction that the player is currently facing
-  public currDirection: Direction | null = null
+  public currDirection: Direction = Direction.DOWN
 
   constructor(config: MoveControllerConfig) {
     const { game, player } = config

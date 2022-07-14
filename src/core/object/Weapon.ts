@@ -6,10 +6,7 @@ export interface WeaponConfig {
   game: Game
   player: Player
   textureSet: {
-    up: string
-    down: string
-    left: string
-    right: string
+    [key: string]: string
   }
   damage: number
   attackRange: number
@@ -35,6 +32,12 @@ export class Weapon {
     const baseSprite = this.player.getBaseSprite()
     this.sprite = this.game.add.sprite(baseSprite.x, baseSprite.y, '')
     this.attackEffectSprite = this.game.add.sprite(baseSprite.x, baseSprite.y, '')
+    this.attackEffectSprite.setVisible(false)
+    this.attackEffectSprite.setDepth(1000)
+    this.attackEffectSprite.setName('Effect')
+    this.sprite.setVisible(false)
+    this.sprite.setOrigin(0.5)
+    this.sprite.setName('Weapon')
     this.textureSet = config.textureSet
     this.attackRange = config.attackRange
 
@@ -67,8 +70,8 @@ export class Weapon {
       this.sprite.setDepth(weaponDepth)
       this.sprite.scaleY = scaleY
       this.sprite.scaleX = scaleX
+      this.sprite.setVisible(true)
     }
-    this.sprite.setVisible(true)
   }
 
   hide() {
@@ -424,7 +427,7 @@ export class Weapon {
   }
 
   getWeaponDepth() {
-    return this.player.getBaseSprite().depth + 1
+    return this.player.getBaseSprite().depth + 100
   }
 
   getWeaponScaleY() {
@@ -442,7 +445,7 @@ export class Weapon {
   }
 
   getWeaponRotationAngle() {
-    return 60
+    return 0
   }
 
   // Refactor this
