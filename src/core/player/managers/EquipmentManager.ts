@@ -1,4 +1,6 @@
+import { Weapon } from '~/core/object/Weapon'
 import Game from '~/scenes/Game'
+import { Direction } from '~/utils/Constants'
 import { Player } from '../Player'
 
 // Add stats later
@@ -27,11 +29,15 @@ export class EquipmentManager {
   public chestArmor?: ArmorPiece
   public legArmor?: ArmorPiece
   public armArmor?: ArmorPiece
+  public weapon: Weapon | null = null
 
   constructor(config: EquipmentManagerConfig) {
     const { player, game } = config
     this.player = player
     this.game = game
+    this.player.registerOnUpdateHook(() => {
+      this.update()
+    })
   }
 
   public setArmorPiece(key: ArmorType, armorPiece: ArmorPiece) {
@@ -52,6 +58,29 @@ export class EquipmentManager {
         this.legArmor = armorPiece
         break
       }
+    }
+  }
+
+  public setupWeapon() {
+    this.weapon = new Weapon({
+      name: 'Stone Axe',
+      game: this.game,
+      player: this.player,
+      textureSet: {
+        [Direction.UP]: 'stone-axe-diag',
+        [Direction.DOWN]: 'stone-axe-diag',
+        [Direction.LEFT]: 'stone-axe',
+        [Direction.RIGHT]: 'stone-axe',
+      },
+      damage: 15,
+      attackRange: 20,
+    })
+    this.weapon.show()
+  }
+
+  public update() {
+    if (this.weapon) {
+      this.weapon.show()
     }
   }
 }

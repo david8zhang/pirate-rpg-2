@@ -17,6 +17,7 @@ import { Weapon } from '../object/Weapon'
 export class Player {
   public game: Game
   public stateMachine: StateMachine
+  public onUpdateHooks: Function[] = []
 
   // Store states
   public equipmentManager!: EquipmentManager
@@ -46,35 +47,16 @@ export class Player {
       [this]
     )
     this.getBaseSprite().setData('ref', this)
-    this.setupWeapon()
-  }
-
-  setupWeapon() {
-    const baseSprite = this.getBaseSprite()
-    this.game.add.circle(baseSprite.x + 8, baseSprite.y + 12, 2, 0xff0000)
-    const weapon = new Weapon({
-      name: 'Stone Axe',
-      game: this.game,
-      player: this,
-      textureSet: {
-        [Direction.UP]: 'stone-axe-diag',
-        [Direction.DOWN]: 'stone-axe-diag',
-        [Direction.LEFT]: 'stone-axe',
-        [Direction.RIGHT]: 'stone-axe',
-      },
-      damage: 15,
-      attackRange: 20,
-    })
-    // weapon.show()
+    this.equipmentManager.setupWeapon()
   }
 
   setupManagers(game: Game, config: EntityConfig) {
-    this.equipmentManager = new EquipmentManager({
-      player: this,
-      game,
-    })
     this.spriteManager = new SpriteManager({
       config,
+      game,
+    })
+    this.equipmentManager = new EquipmentManager({
+      player: this,
       game,
     })
     this.inventoryManager = new InventoryManager({
@@ -106,16 +88,8 @@ export class Player {
     })
   }
 
-  getHandPosition() {
-    const baseSprite = this.getBaseSprite()
-    switch (this.moveController.currDirection) {
-      case Direction.LEFT: {
-        return {
-          x: baseSprite.x - 3,
-          y: baseSprite.y + 12,
-        }
-      }
-    }
+  public registerOnUpdateHook(fn: Function) {
+    this.onUpdateHooks.push(fn)
   }
 
   get position() {
@@ -142,6 +116,9 @@ export class Player {
 
   update() {
     this.stateMachine.step()
+    this.onUpdateHooks.forEach((fn) => {
+      fn()
+    })
   }
 
   getDirection() {

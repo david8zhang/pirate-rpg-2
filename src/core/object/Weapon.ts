@@ -445,15 +445,66 @@ export class Weapon {
   }
 
   getWeaponRotationAngle() {
-    return 0
+    const baseSprite = this.player.getBaseSprite()
+    const currAnimFrame = baseSprite.anims.currentFrame
+    switch (this.player.getDirection()) {
+      case Direction.RIGHT: {
+        switch (currAnimFrame.textureFrame) {
+          case '1.png': {
+            return 120
+          }
+          case '3.png': {
+            return 60
+          }
+          default:
+            return 90
+        }
+      }
+      case Direction.LEFT: {
+        switch (currAnimFrame.textureFrame) {
+          case '1.png': {
+            return 60
+          }
+          case '3.png': {
+            return 120
+          }
+          default:
+            return 90
+        }
+      }
+      default:
+        return 0
+    }
   }
 
   // Refactor this
   getPlayerHandPosition() {
-    const baseSprite = this.player.getBaseSprite()
-    return {
-      x: baseSprite.x - 10,
-      y: baseSprite.y,
+    const baseSprite = this.player.getBaseSprite() as Phaser.Physics.Arcade.Sprite
+    switch (this.player.getDirection()) {
+      case Direction.LEFT: {
+        return {
+          x: baseSprite.x - 16,
+          y: baseSprite.y + 13,
+        }
+      }
+      case Direction.RIGHT: {
+        return {
+          x: baseSprite.x + 16,
+          y: baseSprite.y + 13,
+        }
+      }
+      case Direction.UP: {
+        return {
+          x: baseSprite.x - 8,
+          y: baseSprite.y - 2,
+        }
+      }
+      case Direction.DOWN: {
+        return {
+          x: baseSprite.x + 8,
+          y: baseSprite.y - 2,
+        }
+      }
     }
   }
 }
