@@ -355,7 +355,6 @@ export class Weapon {
         this.attackEffectSprite.scaleY = -1
         this.attackEffectSprite.scaleX = -1
         this.attackEffectSprite.setAngle(90)
-        this.sprite.scaleX = 1
         const frames = [
           {
             texture: sideTexture,
@@ -372,7 +371,7 @@ export class Weapon {
             angle: 270,
           },
           {
-            texture: diagTexture,
+            texture: sideTexture,
             x: -20,
             y: 5,
             time: 75,
@@ -388,7 +387,7 @@ export class Weapon {
               this.activateWeaponHitbox()
               this.attackEffectSprite.setVisible(true)
               this.attackEffectSprite.setTexture('slash-1')
-              this.attackEffectSprite.setPosition(this.sprite.x - 30, this.sprite.y - 30)
+              this.attackEffectSprite.setPosition(this.sprite.x - 30, this.sprite.y - 25)
             },
           },
           {
@@ -400,7 +399,7 @@ export class Weapon {
             onShowFn: () => {
               this.attackEffectSprite.setVisible(true)
               this.attackEffectSprite.setTexture('slash-2')
-              this.attackEffectSprite.setPosition(this.sprite.x - 30, this.sprite.y - 30)
+              this.attackEffectSprite.setPosition(this.sprite.x - 30, this.sprite.y - 25)
             },
           },
           {
@@ -445,32 +444,12 @@ export class Weapon {
   }
 
   getWeaponRotationAngle() {
-    const baseSprite = this.player.getBaseSprite()
-    const currAnimFrame = baseSprite.anims.currentFrame
     switch (this.player.getDirection()) {
       case Direction.RIGHT: {
-        switch (currAnimFrame.textureFrame) {
-          case '1.png': {
-            return 120
-          }
-          case '3.png': {
-            return 60
-          }
-          default:
-            return 90
-        }
+        return 90
       }
       case Direction.LEFT: {
-        switch (currAnimFrame.textureFrame) {
-          case '1.png': {
-            return 60
-          }
-          case '3.png': {
-            return 120
-          }
-          default:
-            return 90
-        }
+        return 90
       }
       default:
         return 0

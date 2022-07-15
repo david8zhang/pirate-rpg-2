@@ -88,6 +88,16 @@ export class Player {
     })
   }
 
+  playWeaponAttackAnimation() {
+    if (this.equipmentManager.weapon) {
+      this.equipmentManager.weapon.playAttackAnimation()
+    }
+  }
+
+  isArmed() {
+    return this.equipmentManager.weapon != null
+  }
+
   public registerOnUpdateHook(fn: Function) {
     this.onUpdateHooks.push(fn)
   }

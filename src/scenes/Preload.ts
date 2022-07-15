@@ -71,8 +71,8 @@ export default class Preload extends Scene {
   loadWeapons() {
     this.load.image('stone-axe-diag', 'equipment/weapons/stone-axe/axe-diag.png')
     this.load.image('stone-axe', 'equipment/weapons/stone-axe/axe.png')
-    this.load.image('slash-1', 'weapons/effects/slash-1.png')
-    this.load.image('slash-2', 'weapons/effects/slash-2.png')
+    this.load.image('slash-1', 'equipment/weapons/effects/slash-1.png')
+    this.load.image('slash-2', 'equipment/weapons/effects/slash-2.png')
   }
 
   create() {

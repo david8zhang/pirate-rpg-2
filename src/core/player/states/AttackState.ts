@@ -7,10 +7,16 @@ export class AttackState extends State {
     player.stop()
     const currDirection = player.getDirection()
     if (currDirection) {
-      player.colliderController.activateAttackHitbox(currDirection)
-      player.animController.playAttackAnimation(currDirection, false, () => {
+      const isArmed = player.isArmed()
+      if (!isArmed) {
+        player.colliderController.activateAttackHitbox(currDirection)
+      }
+      player.playWeaponAttackAnimation()
+      player.animController.playAttackAnimation(currDirection, isArmed, () => {
         this.stateMachine.transition('idle')
-        player.colliderController.deactivateAttackHitbox()
+        if (!isArmed) {
+          player.colliderController.deactivateAttackHitbox()
+        }
         player.game.isHarvestableCollided = false
         player.game.isMobCollided = false
       })
