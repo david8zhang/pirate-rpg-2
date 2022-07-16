@@ -10,6 +10,7 @@ export class Weapon {
   private attackEffectSprite: Phaser.GameObjects.Sprite
   public textureSet: any
   public attackRange: number
+  public prevPlayerDirection: Direction
 
   // Hitbox image
   public hitboxImage: Phaser.Physics.Arcade.Image
@@ -38,6 +39,11 @@ export class Weapon {
     this.hitboxImage.setDebugBodyColor(0xffff00)
 
     // Setup weapon position
+    this.prevPlayerDirection = this.player.getDirection()
+    this.setWeaponPosition()
+  }
+
+  setWeaponPosition() {
     const handPosition = this.getPlayerHandPosition()
     this.sprite.setX(handPosition.x)
     this.sprite.setY(handPosition.y)
@@ -55,6 +61,12 @@ export class Weapon {
         const currWeaponTexture = this.textureSet[currDirection]
         this.sprite.setTexture(currWeaponTexture)
       }
+
+      if (currDirection !== this.prevPlayerDirection) {
+        this.prevPlayerDirection = currDirection
+        this.setWeaponPosition()
+      }
+
       this.sprite.setAngle(rotationAngle)
       this.sprite.setDepth(weaponDepth)
       this.sprite.scaleY = scaleY
@@ -202,6 +214,7 @@ export class Weapon {
           this.isAttacking = false
           this.hitboxImage.body.enable = false
           this.attackEffectSprite.scaleX = 1
+          this.setWeaponPosition()
         })
         break
       }
@@ -268,6 +281,7 @@ export class Weapon {
         this.playAnimationFrames(frames, 0, () => {
           this.isAttacking = false
           this.hitboxImage.body.enable = false
+          this.setWeaponPosition()
         })
         break
       }
@@ -337,6 +351,7 @@ export class Weapon {
           this.isAttacking = false
           this.hitboxImage.body.enable = false
           this.attackEffectSprite.setAngle(0)
+          this.setWeaponPosition()
         })
         break
       }
@@ -408,6 +423,7 @@ export class Weapon {
         this.playAnimationFrames(frames, 0, () => {
           this.isAttacking = false
           this.hitboxImage.body.enable = false
+          this.setWeaponPosition()
         })
         break
       }
@@ -452,7 +468,7 @@ export class Weapon {
       case Direction.LEFT: {
         return {
           x: baseSprite.x - 16,
-          y: baseSprite.y + 13,
+          y: baseSprite.y + 10,
         }
       }
       case Direction.RIGHT: {
