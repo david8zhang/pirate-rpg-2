@@ -1,5 +1,6 @@
 import { Weapon } from '~/core/object/Weapon'
 import Game from '~/scenes/Game'
+import { GameUI } from '~/scenes/GameUI'
 import { Direction } from '~/utils/Constants'
 import { Player } from '../Player'
 
@@ -37,6 +38,13 @@ export class EquipmentManager {
     this.game = game
     this.player.registerOnUpdateHook(() => {
       this.update()
+    })
+
+    console.log('Went here!')
+    this.game.input.keyboard.on('keydown', (keycode: any) => {
+      if (keycode.code === 'KeyC') {
+        GameUI.instance.equipMenu.toggleVisible()
+      }
     })
   }
 

@@ -67,7 +67,6 @@ export default class Game extends Phaser.Scene {
 
   configureCamera() {
     this.cameras.main.setBounds(0, 0, Constants.GAME_WIDTH, Constants.GAME_HEIGHT)
-    this.cameras.main.setRoundPixels(true)
   }
 
   initItems() {
@@ -179,7 +178,7 @@ export default class Game extends Phaser.Scene {
     this.physics.add.collider(this.player.attackHitbox, this.harvestableGroup, (obj1, obj2) => {
       if (!this.isHarvestableCollided) {
         this.isHarvestableCollided = true
-        this.cameras.main.shake(125, 0.002)
+        this.cameras.main.shake(200, 0.002)
         const harvestable = obj1.getData('ref') as Harvestable
         harvestable.takeDamage()
       }
@@ -187,7 +186,7 @@ export default class Game extends Phaser.Scene {
     this.physics.add.collider(this.player.attackHitbox, this.mobGroup, (obj1, obj2) => {
       if (!this.isMobCollided) {
         this.isMobCollided = true
-        this.cameras.main.shake(125, 0.002)
+        this.cameras.main.shake(200, 0.002)
         const mob = obj2.getData('ref') as Mob
       }
     })

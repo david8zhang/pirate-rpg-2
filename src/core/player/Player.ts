@@ -9,10 +9,9 @@ import { AttackState } from './states/AttackState'
 import { ArmorPiece, ArmorType, EquipmentManager } from './managers/EquipmentManager'
 import { SpriteManager } from './managers/SpriteManager'
 import { ColliderController } from './controllers/ColliderController'
-import { Direction, EntityConfig } from '~/utils/Constants'
+import { EntityConfig } from '~/utils/Constants'
 import { Item } from '../object/Item'
 import { InventoryManager } from './managers/InventoryManager'
-import { Weapon } from '../object/Weapon'
 
 export class Player {
   public game: Game
@@ -71,10 +70,6 @@ export class Player {
   }
 
   setupControllers(game: Game, config: EntityConfig) {
-    this.equipmentManager = new EquipmentManager({
-      player: this,
-      game,
-    })
     this.animController = new AnimationController({
       sprites: this.spriteManager.sprites,
     })

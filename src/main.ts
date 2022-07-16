@@ -8,7 +8,6 @@ import { Constants } from './utils/Constants'
 import { GameUI } from './scenes/GameUI'
 
 const config: Phaser.Types.Core.GameConfig = {
-  antialias: false,
   type: Phaser.AUTO,
   width: Constants.SCREEN_WIDTH,
   height: Constants.SCREEN_HEIGHT,
@@ -17,7 +16,7 @@ const config: Phaser.Types.Core.GameConfig = {
     default: 'arcade',
     arcade: {
       gravity: { x: 0, y: 0 },
-      // debug: true,
+      debug: true,
     },
   },
   dom: {

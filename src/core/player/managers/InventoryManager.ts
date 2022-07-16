@@ -30,6 +30,7 @@ export class InventoryManager {
     this.game = game
     this.game.input.keyboard.on('keydown', (keycode: any) => {
       if (keycode.code === 'KeyI') {
+        console.log('Went Here!')
         GameUI.instance.inventoryMenu.toggleInventoryExpand()
       }
       if (keycode.code === 'KeyE') {

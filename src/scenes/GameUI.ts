@@ -1,4 +1,5 @@
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin'
+import { EquipmentMenu } from '~/core/ui/EquipmentMenu'
 import { InventoryMenu } from '~/core/ui/InventoryMenu'
 import { ItemTooltip } from '~/core/ui/ItemTooltip'
 
@@ -6,6 +7,7 @@ export class GameUI extends Phaser.Scene {
   private static _instance: GameUI
   public itemTooltip!: ItemTooltip
   public inventoryMenu!: InventoryMenu
+  public equipMenu!: EquipmentMenu
   public rexUI!: RexUIPlugin
 
   constructor() {
@@ -17,6 +19,11 @@ export class GameUI extends Phaser.Scene {
 
   preload() {
     this.initializeInventory()
+    this.initializeEquipment()
+  }
+
+  initializeEquipment() {
+    this.equipMenu = new EquipmentMenu(this)
   }
 
   initializeInventory() {

@@ -39,9 +39,9 @@ export const HARVESTABLE_CONFIGS = {
       withoutDrop: 'palm-tree_without_coconut',
     },
     hitbox: {
-      width: 32,
-      height: 20,
-      yOffset: 50,
+      width: 15,
+      height: 10,
+      yOffset: 22,
     },
     scale: 1,
     dropItems: [
