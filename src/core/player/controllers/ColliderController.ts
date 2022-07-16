@@ -22,18 +22,25 @@ export class ColliderController {
   private player: Player
   private game: Game
   public attackHitbox: Phaser.Physics.Arcade.Sprite
+  public attackGroup: Phaser.Physics.Arcade.Group
 
   constructor(config: ColliderControllerConfig) {
     const { player, game, playerConfig } = config
     this.player = player
     this.game = game
+    this.attackGroup = this.game.physics.add.group()
     this.attackHitbox = this.game.physics.add
       .sprite(this.player.position.x, this.player.position.y, '')
       .setVisible(false)
       .setDebug(false, false, 0x00ff00)
+    this.attackGroup.add(this.attackHitbox)
 
     this.setupLayerColliders(playerConfig)
     this.configureBodySize(playerConfig.body)
+  }
+
+  addObjectToAttackHitboxGroup(obj: Phaser.GameObjects.GameObject) {
+    this.attackGroup.add(obj)
   }
 
   setupLayerColliders(playerConfig: EntityConfig) {

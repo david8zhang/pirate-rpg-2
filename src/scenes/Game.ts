@@ -180,7 +180,7 @@ export default class Game extends Phaser.Scene {
       if (!this.isHarvestableCollided) {
         this.isHarvestableCollided = true
         this.cameras.main.shake(125, 0.002)
-        const harvestable = obj2.getData('ref') as Harvestable
+        const harvestable = obj1.getData('ref') as Harvestable
         harvestable.takeDamage()
       }
     })

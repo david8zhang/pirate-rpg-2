@@ -47,7 +47,12 @@ export class Player {
       [this]
     )
     this.getBaseSprite().setData('ref', this)
+    this.setupWeapon()
+  }
+
+  setupWeapon() {
     this.equipmentManager.setupWeapon()
+    this.colliderController.addObjectToAttackHitboxGroup(this.equipmentManager.weapon!.hitboxImage)
   }
 
   setupManagers(game: Game, config: EntityConfig) {
@@ -121,7 +126,7 @@ export class Player {
   }
 
   get attackHitbox() {
-    return this.colliderController.attackHitbox
+    return this.colliderController.attackGroup
   }
 
   update() {
