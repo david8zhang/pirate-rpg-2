@@ -10,6 +10,7 @@ import { UINumber } from '../ui/UINumber'
 import { MobColliderController } from './controllers/MobColliderController'
 import { MobMoveController } from './controllers/MobMoveController'
 import { DeathState } from './states/DeathState'
+import { HurtState } from './states/HurtState'
 import { IdleState } from './states/IdleState'
 import { MobStates } from './states/MobStates'
 
@@ -39,6 +40,7 @@ export class Mob {
       {
         [MobStates.IDLE]: new IdleState(),
         [MobStates.DEATH]: new DeathState(),
+        [MobStates.HURT]: new HurtState(),
       },
       [this]
     )
@@ -71,10 +73,10 @@ export class Mob {
       this.game.cameras.main.shake(100, 0.005)
       this.isHit = true
       this.takeDamage(damage)
-      // this.playHurtAnimBasedOnDirection()
       if (this.health === 0) {
         this.die()
       } else {
+        this.stateMachine.transition(MobStates.HURT)
         sprite.setTint(0xff0000)
         this.game.time.delayedCall(Constants.ATTACK_DURATION, () => {
           this.isHit = false

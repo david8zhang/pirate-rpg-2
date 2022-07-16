@@ -55,6 +55,18 @@ export class AnimationController {
     })
   }
 
+  playHurtAnimation(direction: Direction, onCompletedFn?: Function) {
+    const animDirection = this.getAnimationDirection(direction)
+    this.sprites.forEach((sprite) => {
+      sprite.anims.play(`${sprite.texture.key}-hurt-${animDirection}`)
+    })
+    this.sprites[0].once('animationcomplete', () => {
+      if (onCompletedFn) {
+        onCompletedFn()
+      }
+    })
+  }
+
   playMoveAnimation(direction: Direction) {
     const animDirection = this.getAnimationDirection(direction)
     this.sprites.forEach((sprite) => {
