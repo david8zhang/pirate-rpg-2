@@ -15,6 +15,7 @@ export class Weapon {
   // Hitbox image
   public hitboxImage: Phaser.Physics.Arcade.Image
   public isAttacking: boolean = false
+  public damage: number = 0
 
   constructor(config: WeaponConfig, game: Game, player: Player) {
     this.game = game
@@ -29,6 +30,7 @@ export class Weapon {
     this.sprite.setOrigin(0.5)
     this.textureSet = config.textureSet
     this.attackRange = config.attackRange
+    this.damage = config.damage
 
     // Initialize weapon hitbox
     this.hitboxImage = this.game.physics.add.image(this.sprite.x, this.sprite.y, '')

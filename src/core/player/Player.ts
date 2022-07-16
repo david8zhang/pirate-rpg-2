@@ -9,10 +9,11 @@ import { AttackState } from './states/AttackState'
 import { ArmorPiece, ArmorType, EquipmentManager } from './managers/EquipmentManager'
 import { SpriteManager } from './managers/SpriteManager'
 import { ColliderController } from './controllers/ColliderController'
-import { EntityConfig } from '~/utils/Constants'
+import { Constants, EntityConfig } from '~/utils/Constants'
 import { Item } from '../object/Item'
 import { InventoryManager } from './managers/InventoryManager'
 import { WeaponTypes, WEAPON_CONFIGS } from '~/utils/configs/weapons'
+import { PlayerStates } from './states/PlayerStates'
 
 export class Player {
   public game: Game
@@ -38,11 +39,11 @@ export class Player {
     this.setupManagers(game, config)
     this.setupControllers(game, config)
     this.stateMachine = new StateMachine(
-      'idle',
+      PlayerStates.IDLE,
       {
-        idle: new IdleState(),
-        move: new MoveState(),
-        attack: new AttackState(),
+        [PlayerStates.IDLE]: new IdleState(),
+        [PlayerStates.MOVE]: new MoveState(),
+        [PlayerStates.ATTACK]: new AttackState(),
       },
       [this]
     )
@@ -146,6 +147,13 @@ export class Player {
       sprites.push(this.equipmentManager.weapon.sprite)
     }
     return sprites
+  }
+
+  get damage() {
+    if (this.equipmentManager.weapon) {
+      return this.equipmentManager.weapon.damage
+    }
+    return Constants.UNARMED_DAMAGE
   }
 
   getBaseSprite() {

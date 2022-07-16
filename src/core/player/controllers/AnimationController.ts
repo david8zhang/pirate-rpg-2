@@ -41,6 +41,20 @@ export class AnimationController {
     })
   }
 
+  playDeathAnimation(direction: Direction, onCompletedFn?: Function) {
+    const animDirection = this.getAnimationDirection(direction)
+    this.sprites.forEach((sprite) => {
+      if (sprite.visible) {
+        sprite.anims.play(`${sprite.texture.key}-die-${animDirection}`)
+      }
+    })
+    this.sprites[0].once('animationcomplete', () => {
+      if (onCompletedFn) {
+        onCompletedFn()
+      }
+    })
+  }
+
   playMoveAnimation(direction: Direction) {
     const animDirection = this.getAnimationDirection(direction)
     this.sprites.forEach((sprite) => {

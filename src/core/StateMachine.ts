@@ -1,18 +1,14 @@
 export class StateMachine {
-  private initialState: string
+  private initialState: any
   private possibleStates: { [key: string]: State }
   private stateArgs: any[]
-  private state: string
+  private state: any
 
-  constructor(
-    initialState: string,
-    possibleStates: { [key: string]: State },
-    stateArgs: any[] = []
-  ) {
+  constructor(initialState: any, possibleStates: { [key: string]: State }, stateArgs: any[] = []) {
     this.initialState = initialState
     this.possibleStates = possibleStates
     this.stateArgs = stateArgs
-    this.state = ''
+    this.state = this.initialState
 
     Object.keys(this.possibleStates).forEach((key: string) => {
       this.possibleStates[key].stateMachine = this
@@ -31,7 +27,7 @@ export class StateMachine {
     this.possibleStates[this.state].execute(...this.stateArgs)
   }
 
-  transition(newState: string, ...enterArgs: any[]) {
+  transition(newState: any, ...enterArgs: any[]) {
     this.state = newState
     this.possibleStates[this.state].enter(...this.stateArgs, ...enterArgs)
   }

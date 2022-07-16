@@ -53,4 +53,8 @@ export class SpriteManager {
     }
     this.spriteMapping[key].setTexture(texture)
   }
+
+  destroy() {
+    this.sprites.forEach((sprite) => sprite.destroy())
+  }
 }

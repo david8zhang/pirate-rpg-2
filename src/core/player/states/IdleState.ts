@@ -1,6 +1,7 @@
 import { State } from '~/core/StateMachine'
 import { Direction } from '~/utils/Constants'
 import { Player } from '../Player'
+import { PlayerStates } from './PlayerStates'
 
 export class IdleState extends State {
   enter(player: Player) {
@@ -14,9 +15,9 @@ export class IdleState extends State {
 
   execute(player: Player) {
     if (player.attackController && player.attackController.detectAttack()) {
-      this.stateMachine.transition('attack')
+      this.stateMachine.transition(PlayerStates.ATTACK)
     } else if (player.moveController.detectMovement()) {
-      this.stateMachine.transition('move')
+      this.stateMachine.transition(PlayerStates.MOVE)
     } else {
       const currDirection = player.moveController.currDirection
       if (currDirection) {

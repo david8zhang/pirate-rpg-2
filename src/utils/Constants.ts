@@ -55,6 +55,9 @@ export class Constants {
   public static SCREEN_WIDTH = 640
   public static SCREEN_HEIGHT = 320
 
+  public static ATTACK_DURATION = 400
+  public static UNARMED_DAMAGE = 10
+
   public static MAP_WIDTH = 100
   public static MAP_HEIGHT = 100
   public static TILE_SIZE = 32

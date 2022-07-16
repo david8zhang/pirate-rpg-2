@@ -199,7 +199,8 @@ export default class Game extends Phaser.Scene {
       if (!this.isMobCollided) {
         this.isMobCollided = true
         this.cameras.main.shake(200, 0.002)
-        const mob = obj2.getData('ref') as Mob
+        const mob = obj1.getData('ref') as Mob
+        mob.onHit(this.player.damage)
       }
     })
   }

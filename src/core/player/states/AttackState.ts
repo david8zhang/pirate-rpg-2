@@ -1,6 +1,7 @@
 import { State } from '~/core/StateMachine'
 
 import { Player } from '../Player'
+import { PlayerStates } from './PlayerStates'
 
 export class AttackState extends State {
   enter(player: Player) {
@@ -13,7 +14,7 @@ export class AttackState extends State {
       }
       player.playWeaponAttackAnimation()
       player.animController.playAttackAnimation(currDirection, isArmed, () => {
-        this.stateMachine.transition('idle')
+        this.stateMachine.transition(PlayerStates.IDLE)
         if (!isArmed) {
           player.colliderController.deactivateAttackHitbox()
         }

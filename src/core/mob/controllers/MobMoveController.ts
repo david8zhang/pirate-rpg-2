@@ -14,7 +14,7 @@ export class MobMoveController implements MoveControllerInterface {
   private config: MobConfig
   private game: Game
   private mob: Mob
-  public currDirection: Direction | null = null
+  public currDirection: Direction = Direction.DOWN
   constructor(config: MobMoveControllerConfig) {
     this.config = config.config
     this.game = config.game
