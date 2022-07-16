@@ -15,7 +15,7 @@ import { IdleState } from './states/IdleState'
 import { MobStates } from './states/MobStates'
 
 export class Mob {
-  private game: Game
+  public game: Game
   public name: string
   public spriteManager!: SpriteManager
   public animController!: AnimationController
@@ -36,7 +36,7 @@ export class Mob {
     this.setupManagers(game, config)
     this.setupControllers(game, config)
     this.stateMachine = new StateMachine(
-      [MobStates.IDLE],
+      MobStates.IDLE,
       {
         [MobStates.IDLE]: new IdleState(),
         [MobStates.DEATH]: new DeathState(),
@@ -68,26 +68,10 @@ export class Mob {
   }
 
   onHit(damage: number) {
-    const sprite = this.getBaseSprite()
     if (!this.isHit) {
-      this.game.cameras.main.shake(100, 0.005)
       this.isHit = true
-      this.takeDamage(damage)
-      if (this.health === 0) {
-        this.die()
-      } else {
-        this.stateMachine.transition(MobStates.HURT)
-        sprite.setTint(0xff0000)
-        this.game.time.delayedCall(Constants.ATTACK_DURATION, () => {
-          this.isHit = false
-          sprite.setTint(0xffffff)
-        })
-      }
+      this.stateMachine.transition(MobStates.HURT, damage)
     }
-  }
-
-  die(): void {
-    this.stateMachine.transition(MobStates.DEATH)
   }
 
   takeDamage(damage: number) {

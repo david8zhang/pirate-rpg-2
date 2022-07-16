@@ -1,11 +1,24 @@
 import { State } from '~/core/StateMachine'
+import { Constants } from '~/utils/Constants'
 import { Mob } from '../Mob'
 import { MobStates } from './MobStates'
 
 export class HurtState extends State {
-  enter(mob: Mob) {
+  enter(mob: Mob, damage: number) {
+    const sprite = mob.getBaseSprite()
+    mob.game.cameras.main.shake(100, 0.005)
+    mob.takeDamage(damage)
+    sprite.setTint(0xff0000)
     mob.animController.playHurtAnimation(mob.getDirection(), () => {
-      mob.stateMachine.transition(MobStates.IDLE)
+      sprite.setTint(0xffffff)
+      if (mob.health === 0) {
+        mob.stateMachine.transition(MobStates.DEATH)
+      } else {
+        mob.stateMachine.transition(MobStates.IDLE)
+      }
+    })
+    mob.game.time.delayedCall(Constants.ATTACK_DURATION, () => {
+      mob.isHit = false
     })
   }
 }
