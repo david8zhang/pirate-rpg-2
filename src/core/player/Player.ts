@@ -12,6 +12,7 @@ import { ColliderController } from './controllers/ColliderController'
 import { EntityConfig } from '~/utils/Constants'
 import { Item } from '../object/Item'
 import { InventoryManager } from './managers/InventoryManager'
+import { WeaponTypes, WEAPON_CONFIGS } from '~/utils/configs/weapons'
 
 export class Player {
   public game: Game
@@ -50,7 +51,7 @@ export class Player {
   }
 
   setupWeapon() {
-    this.equipmentManager.setupWeapon()
+    this.equipmentManager.setupWeapon(WEAPON_CONFIGS[WeaponTypes.STONE_AXE])
     this.colliderController.addObjectToAttackHitboxGroup(this.equipmentManager.weapon!.hitboxImage)
   }
 
@@ -140,7 +141,11 @@ export class Player {
   }
 
   getSprites() {
-    return this.spriteManager.sprites
+    const sprites = [...this.spriteManager.sprites]
+    if (this.equipmentManager.weapon) {
+      sprites.push(this.equipmentManager.weapon.sprite)
+    }
+    return sprites
   }
 
   getBaseSprite() {

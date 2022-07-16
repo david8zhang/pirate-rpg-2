@@ -109,12 +109,24 @@ export default class Game extends Phaser.Scene {
           },
         }
         this.player = new Player(this, config)
-        this.cameras.main.startFollow(this.player.getBaseSprite())
+        this.cameras.main.startFollow(this.player.getBaseSprite(), true)
 
         // Add equipment
-        this.player.addEquipment(ArmorType.HEAD, { animKey: 'red-bandana' })
-        this.player.addEquipment(ArmorType.LEGS, { animKey: 'leather-pants' })
-        this.player.addEquipment(ArmorType.CHEST, { animKey: 'leather-vest' })
+        this.player.addEquipment(ArmorType.HEAD, {
+          animKey: 'red-bandana',
+          name: 'Red Bandana',
+          inventoryIcon: 'red-bandana-icon',
+        })
+        this.player.addEquipment(ArmorType.LEGS, {
+          animKey: 'leather-pants',
+          name: 'Leather Pants',
+          inventoryIcon: 'leather-pants-icon',
+        })
+        this.player.addEquipment(ArmorType.CHEST, {
+          animKey: 'leather-vest',
+          name: 'Leather Vest',
+          inventoryIcon: 'leather-vest-icon',
+        })
       }
     }
   }

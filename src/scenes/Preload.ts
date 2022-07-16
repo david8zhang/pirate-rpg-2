@@ -43,16 +43,24 @@ export default class Preload extends Scene {
       'equipment/chest/leather-vest/leather-vest.png',
       'equipment/chest/leather-vest/leather-vest.json'
     )
+    this.load.image('leather-vest-icon', 'equipment/chest/leather-vest/leather-vest-inventory.png')
+
     this.load.atlas(
       'leather-pants',
       'equipment/legs/leather-pants/leather-pants.png',
       'equipment/legs/leather-pants/leather-pants.json'
     )
+    this.load.image(
+      'leather-pants-icon',
+      'equipment/legs/leather-pants/leather-pants-inventory.png'
+    )
+
     this.load.atlas(
       'red-bandana',
       'equipment/head/red-bandana/red-bandana.png',
       'equipment/head/red-bandana/red-bandana.json'
     )
+    this.load.image('red-bandana-icon', 'equipment/head/red-bandana/red-bandana-inventory.png')
   }
 
   loadHarvestables() {
@@ -69,6 +77,7 @@ export default class Preload extends Scene {
   }
 
   loadWeapons() {
+    this.load.image('stone-axe-icon', 'equipment/weapons/stone-axe/axe-inventory.png')
     this.load.image('stone-axe-diag', 'equipment/weapons/stone-axe/axe-diag.png')
     this.load.image('stone-axe', 'equipment/weapons/stone-axe/axe.png')
     this.load.image('slash-1', 'equipment/weapons/effects/slash-1.png')

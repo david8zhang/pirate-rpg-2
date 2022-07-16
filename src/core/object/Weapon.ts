@@ -1,22 +1,12 @@
 import Game from '~/scenes/Game'
+import { WeaponConfig } from '~/utils/configs/weapons'
 import { Direction } from '~/utils/Constants'
 import { Player } from '../player/Player'
-
-export interface WeaponConfig {
-  game: Game
-  player: Player
-  textureSet: {
-    [key: string]: string
-  }
-  damage: number
-  attackRange: number
-  name: string
-}
 
 export class Weapon {
   private game: Game
   private player: Player
-  private sprite: Phaser.GameObjects.Sprite
+  public sprite: Phaser.Physics.Arcade.Sprite
   private attackEffectSprite: Phaser.GameObjects.Sprite
   public textureSet: any
   public attackRange: number
@@ -25,19 +15,17 @@ export class Weapon {
   public hitboxImage: Phaser.Physics.Arcade.Image
   public isAttacking: boolean = false
 
-  constructor(config: WeaponConfig) {
-    const { game, player } = config
+  constructor(config: WeaponConfig, game: Game, player: Player) {
     this.game = game
     this.player = player
     const baseSprite = this.player.getBaseSprite()
-    this.sprite = this.game.add.sprite(baseSprite.x, baseSprite.y, '')
+    this.sprite = this.game.physics.add.sprite(baseSprite.x, baseSprite.y, '')
     this.attackEffectSprite = this.game.add.sprite(baseSprite.x, baseSprite.y, '')
     this.attackEffectSprite.setVisible(false)
     this.attackEffectSprite.setDepth(1000)
     this.attackEffectSprite.setName('Effect')
     this.sprite.setVisible(false)
     this.sprite.setOrigin(0.5)
-    this.sprite.setName('Weapon')
     this.textureSet = config.textureSet
     this.attackRange = config.attackRange
 
@@ -48,18 +36,19 @@ export class Weapon {
     this.game.physics.world.enableBody(this.hitboxImage, Phaser.Physics.Arcade.DYNAMIC_BODY)
     this.hitboxImage.setPushable(false)
     this.hitboxImage.setDebugBodyColor(0xffff00)
+
+    // Setup weapon position
+    const handPosition = this.getPlayerHandPosition()
+    this.sprite.setX(handPosition.x)
+    this.sprite.setY(handPosition.y)
   }
 
   show() {
     if (!this.isAttacking) {
-      const handPosition = this.getPlayerHandPosition()
       const weaponDepth = this.getWeaponDepth()
       const rotationAngle = this.getWeaponRotationAngle()
       const scaleX = this.getWeaponScaleX()
       const scaleY = this.getWeaponScaleY()
-
-      this.sprite.setX(handPosition.x)
-      this.sprite.setY(handPosition.y)
 
       const currDirection = this.player.getDirection()
       if (currDirection) {

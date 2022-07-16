@@ -1,12 +1,16 @@
 import { Weapon } from '~/core/object/Weapon'
+import { ItemBox } from '~/core/ui/ItemBox'
 import Game from '~/scenes/Game'
 import { GameUI } from '~/scenes/GameUI'
+import { WeaponConfig } from '~/utils/configs/weapons'
 import { Direction } from '~/utils/Constants'
 import { Player } from '../Player'
 
 // Add stats later
 export interface ArmorPiece {
   animKey: string
+  name: string
+  inventoryIcon: string
 }
 
 export enum ArmorType {
@@ -39,8 +43,6 @@ export class EquipmentManager {
     this.player.registerOnUpdateHook(() => {
       this.update()
     })
-
-    console.log('Went here!')
     this.game.input.keyboard.on('keydown', (keycode: any) => {
       if (keycode.code === 'KeyC') {
         GameUI.instance.equipMenu.toggleVisible()
@@ -49,40 +51,37 @@ export class EquipmentManager {
   }
 
   public setArmorPiece(key: ArmorType, armorPiece: ArmorPiece) {
+    let itemBoxToUpdate: ItemBox | null = null
     switch (key) {
       case ArmorType.ARMS: {
+        itemBoxToUpdate = GameUI.instance.equipMenu.armsBox
         this.armArmor = armorPiece
         break
       }
       case ArmorType.CHEST: {
+        itemBoxToUpdate = GameUI.instance.equipMenu.chestBox
         this.chestArmor = armorPiece
         break
       }
       case ArmorType.HEAD: {
+        itemBoxToUpdate = GameUI.instance.equipMenu.headBox
         this.headArmor = armorPiece
         break
       }
       case ArmorType.LEGS: {
+        itemBoxToUpdate = GameUI.instance.equipMenu.pantsBox
         this.legArmor = armorPiece
         break
       }
     }
+    if (itemBoxToUpdate) {
+      itemBoxToUpdate.setItem(1, armorPiece.name, armorPiece.inventoryIcon)
+    }
   }
 
-  public setupWeapon() {
-    this.weapon = new Weapon({
-      name: 'Stone Axe',
-      game: this.game,
-      player: this.player,
-      textureSet: {
-        [Direction.UP]: 'stone-axe-diag',
-        [Direction.DOWN]: 'stone-axe-diag',
-        [Direction.LEFT]: 'stone-axe',
-        [Direction.RIGHT]: 'stone-axe',
-      },
-      damage: 15,
-      attackRange: 20,
-    })
+  public setupWeapon(config: WeaponConfig) {
+    this.weapon = new Weapon(config, this.game, this.player)
+    GameUI.instance.equipMenu.weaponBox.setItem(1, config.name, config.inventoryIcon)
     this.weapon.show()
   }
 

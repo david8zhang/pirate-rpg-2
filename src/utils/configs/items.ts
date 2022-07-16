@@ -17,7 +17,7 @@ export enum ItemTypes {
 export const ITEM_CONFIGS = {
   [ItemTypes.COCONUT]: {
     name: ItemTypes.COCONUT,
-    dropLength: 650,
+    dropLength: 700,
     texture: 'coconut',
     scale: 1,
     description: 'A tasty coconut. Heals 20 HP',

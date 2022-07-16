@@ -1,6 +1,5 @@
 import Game from '~/scenes/Game'
 import { EntityConfig } from '~/utils/Constants'
-import { ArmorType } from './EquipmentManager'
 
 export interface SpriteManagerConfig {
   game: Game

@@ -1,4 +1,4 @@
-import { ItemBox } from './InventoryMenu'
+import { ItemBox } from './ItemBox'
 
 export class EquipmentMenu {
   private static MENU_Y_POS = 175
@@ -16,31 +16,41 @@ export class EquipmentMenu {
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene
-    this.headBox = new ItemBox(scene, EquipmentMenu.MENU_X_POS, EquipmentMenu.MENU_Y_POS, true)
-    this.chestBox = new ItemBox(
+    this.headBox = new ItemBox({
       scene,
-      this.headBox.panel.x,
-      EquipmentMenu.MENU_Y_POS + this.headBox.panel.height + EquipmentMenu.PADDING,
-      true
-    )
-    this.armsBox = new ItemBox(
+      x: EquipmentMenu.MENU_X_POS,
+      y: EquipmentMenu.MENU_Y_POS,
+      disableCount: true,
+      disableTooltip: true,
+    })
+    this.chestBox = new ItemBox({
       scene,
-      this.chestBox.panel.x - (this.chestBox.panel.width + EquipmentMenu.PADDING),
-      EquipmentMenu.MENU_Y_POS + this.headBox.panel.height + EquipmentMenu.PADDING,
-      true
-    )
-    this.weaponBox = new ItemBox(
+      x: this.headBox.panel.x,
+      y: EquipmentMenu.MENU_Y_POS + this.headBox.panel.height + EquipmentMenu.PADDING,
+      disableCount: true,
+      disableTooltip: true,
+    })
+    this.armsBox = new ItemBox({
       scene,
-      this.chestBox.panel.x + this.chestBox.panel.width + EquipmentMenu.PADDING,
-      this.chestBox.panel.y,
-      true
-    )
-    this.pantsBox = new ItemBox(
+      x: this.chestBox.panel.x - (this.chestBox.panel.width + EquipmentMenu.PADDING),
+      y: EquipmentMenu.MENU_Y_POS + this.headBox.panel.height + EquipmentMenu.PADDING,
+      disableCount: true,
+      disableTooltip: true,
+    })
+    this.weaponBox = new ItemBox({
       scene,
-      this.chestBox.panel.x,
-      this.chestBox.panel.y + this.chestBox.panel.height + EquipmentMenu.PADDING,
-      true
-    )
+      x: this.chestBox.panel.x + this.chestBox.panel.width + EquipmentMenu.PADDING,
+      y: this.chestBox.panel.y,
+      disableCount: true,
+      disableTooltip: true,
+    })
+    this.pantsBox = new ItemBox({
+      scene,
+      x: this.chestBox.panel.x,
+      y: this.chestBox.panel.y + this.chestBox.panel.height + EquipmentMenu.PADDING,
+      disableCount: true,
+      disableTooltip: true,
+    })
 
     this.chestBox.setVisible(this.isVisible)
     this.headBox.setVisible(this.isVisible)
@@ -77,7 +87,7 @@ export class EquipmentMenu {
   onUnequipItem(itemBox: ItemBox) {
     if (this.onItemClick) {
       this.onItemClick(itemBox)
+      itemBox.removeItem()
     }
-    itemBox.removeItem()
   }
 }

@@ -1,5 +1,5 @@
 import { Item } from '~/core/object/Item'
-import { ItemBox } from '~/core/ui/InventoryMenu'
+import { ItemBox } from '~/core/ui/ItemBox'
 import Game from '~/scenes/Game'
 import { GameUI } from '~/scenes/GameUI'
 import { Player } from '../Player'

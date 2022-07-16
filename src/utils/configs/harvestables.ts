@@ -49,7 +49,7 @@ export const HARVESTABLE_CONFIGS = {
         itemType: ItemTypes.COCONUT,
         quantity: 2,
         relativePosition: {
-          y: -75,
+          y: -50,
           x: 0,
         },
       },
