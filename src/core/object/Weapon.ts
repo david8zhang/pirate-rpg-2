@@ -28,6 +28,7 @@ export class Weapon {
     this.attackEffectSprite.setName('Effect')
     this.sprite.setVisible(false)
     this.sprite.setOrigin(0.5)
+    this.sprite.setDebug(false, false, 0xffffff)
     this.textureSet = config.textureSet
     this.attackRange = config.attackRange
     this.damage = config.damage
@@ -36,8 +37,10 @@ export class Weapon {
     this.hitboxImage = this.game.physics.add.image(this.sprite.x, this.sprite.y, '')
     this.hitboxImage.setSize(5, 5)
     this.hitboxImage.setVisible(false)
+    this.hitboxImage.setData('ref', this)
     this.game.physics.world.enableBody(this.hitboxImage, Phaser.Physics.Arcade.DYNAMIC_BODY)
     this.hitboxImage.setPushable(false)
+    this.deactivateWeaponHitbox()
     this.hitboxImage.setDebugBodyColor(0xffff00)
 
     // Setup weapon position
@@ -81,8 +84,12 @@ export class Weapon {
     this.sprite.setVisible(false)
   }
 
+  public deactivateWeaponHitbox() {
+    this.hitboxImage.setActive(false)
+  }
+
   public activateWeaponHitbox() {
-    this.hitboxImage.body.enable = true
+    this.hitboxImage.setActive(true)
     switch (this.player.getDirection()) {
       case Direction.LEFT: {
         this.hitboxImage.setSize(this.sprite.width + 10, this.player.displaySize.height + 20)
@@ -214,7 +221,7 @@ export class Weapon {
         ]
         this.playAnimationFrames(frames, 0, () => {
           this.isAttacking = false
-          this.hitboxImage.body.enable = false
+          this.hitboxImage.setActive(false)
           this.attackEffectSprite.scaleX = 1
           this.setWeaponPosition()
         })
@@ -282,7 +289,7 @@ export class Weapon {
         ]
         this.playAnimationFrames(frames, 0, () => {
           this.isAttacking = false
-          this.hitboxImage.body.enable = false
+          this.deactivateWeaponHitbox()
           this.setWeaponPosition()
         })
         break
@@ -351,7 +358,7 @@ export class Weapon {
         ]
         this.playAnimationFrames(frames, 0, () => {
           this.isAttacking = false
-          this.hitboxImage.body.enable = false
+          this.deactivateWeaponHitbox()
           this.attackEffectSprite.setAngle(0)
           this.setWeaponPosition()
         })
@@ -424,7 +431,7 @@ export class Weapon {
         ]
         this.playAnimationFrames(frames, 0, () => {
           this.isAttacking = false
-          this.hitboxImage.body.enable = false
+          this.deactivateWeaponHitbox()
           this.setWeaponPosition()
         })
         break

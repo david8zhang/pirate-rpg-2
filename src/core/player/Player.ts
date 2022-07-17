@@ -54,6 +54,7 @@ export class Player {
   setupWeapon() {
     this.equipmentManager.setupWeapon(WEAPON_CONFIGS[WeaponTypes.STONE_AXE])
     this.colliderController.addObjectToAttackHitboxGroup(this.equipmentManager.weapon!.hitboxImage)
+    this.colliderController.deactivateAttackHitbox()
   }
 
   setupManagers(game: Game, config: EntityConfig) {

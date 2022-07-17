@@ -44,6 +44,7 @@ export class MobMoveController implements MoveControllerInterface {
     switch (this.currDirection) {
       case Direction.LEFT: {
         sprites.forEach((sprite) => {
+          sprite.setVelocityY(0)
           sprite.setVelocityX(-this.config.speed)
           sprite.setFlipX(true)
         })
@@ -51,6 +52,7 @@ export class MobMoveController implements MoveControllerInterface {
       }
       case Direction.RIGHT: {
         sprites.forEach((sprite) => {
+          sprite.setVelocityY(0)
           sprite.setVelocityX(this.config.speed)
           sprite.setFlipX(false)
         })
@@ -58,6 +60,7 @@ export class MobMoveController implements MoveControllerInterface {
       }
       case Direction.UP: {
         sprites.forEach((sprite) => {
+          sprite.setVelocityX(0)
           sprite.setVelocityY(-this.config.speed)
           sprite.setFlipX(false)
         })
@@ -65,6 +68,7 @@ export class MobMoveController implements MoveControllerInterface {
       }
       case Direction.DOWN: {
         sprites.forEach((sprite) => {
+          sprite.setVelocityX(0)
           sprite.setVelocityY(this.config.speed)
           sprite.setFlipX(false)
         })

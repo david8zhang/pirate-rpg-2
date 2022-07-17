@@ -13,7 +13,7 @@ export interface MobConfig extends EntityConfig {
 export const CRAB_CONFIG: MobConfig = {
   name: 'crab',
   health: 50,
-  speed: 200,
+  speed: 50,
   position: {
     x: 0,
     y: 0,
@@ -130,6 +130,16 @@ export const CRAB_CONFIG: MobConfig = {
       },
       repeat: 0,
       frameRate: 5,
+    },
+    {
+      key: 'crab-hurt-side',
+      frames: {
+        start: 8,
+        end: 8,
+        suffix: '.png',
+      },
+      repeat: 0,
+      frameRate: 10,
     },
     {
       key: 'crab-die-side',

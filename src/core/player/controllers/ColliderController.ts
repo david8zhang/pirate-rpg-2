@@ -73,13 +73,13 @@ export class ColliderController {
 
   deactivateAttackHitbox() {
     this.attackHitbox.setDebug(false, false, 0x00ff00)
-    this.attackHitbox.body.enable = false
+    this.attackHitbox.setActive(false)
     this.attackHitbox.setPosition(this.player.position.x, this.player.position.y)
   }
 
   activateAttackHitbox(direction: Direction) {
+    this.attackHitbox.setActive(true)
     this.attackHitbox.setDebug(true, false, 0x00ff00)
-    this.attackHitbox.body.enable = true
     const playerPosition = this.player.position
     const playerDisplaySize = this.player.displaySize
     switch (direction) {

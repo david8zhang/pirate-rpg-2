@@ -1,7 +1,6 @@
 import Game from '~/scenes/Game'
-import { GameUI } from '~/scenes/GameUI'
 import { MobConfig } from '~/utils/configs/mobs'
-import { Constants, Direction } from '~/utils/Constants'
+import { Direction } from '~/utils/Constants'
 import { AnimationController } from '../player/controllers/AnimationController'
 import { SpriteManager } from '../player/managers/SpriteManager'
 import { StateMachine } from '../StateMachine'
@@ -13,6 +12,7 @@ import { DeathState } from './states/DeathState'
 import { HurtState } from './states/HurtState'
 import { IdleState } from './states/IdleState'
 import { MobStates } from './states/MobStates'
+import { MoveState } from './states/MoveState'
 
 export class Mob {
   public game: Game
@@ -29,6 +29,7 @@ export class Mob {
   public health!: number
 
   public isHit: boolean = false
+  public updateHooks: Function[] = []
 
   constructor(game: Game, config: MobConfig) {
     this.game = game
@@ -41,6 +42,7 @@ export class Mob {
         [MobStates.IDLE]: new IdleState(),
         [MobStates.DEATH]: new DeathState(),
         [MobStates.HURT]: new HurtState(),
+        [MobStates.MOVE]: new MoveState(),
       },
       [this]
     )
@@ -65,12 +67,17 @@ export class Mob {
     }
     this.healthBar = new HealthBar(this.game, healthBarConfig)
     this.healthBar.setVisible(false)
+    this.updateHooks.push(() => {
+      this.healthBar.x = sprite.x - healthBarWidth / 2
+      this.healthBar.y = sprite.y - sprite.height
+      this.healthBar.draw()
+    })
   }
 
   onHit(damage: number) {
     if (!this.isHit) {
       this.isHit = true
-      this.stateMachine.transition(MobStates.HURT, damage)
+      this.stateMachine.transition(MobStates.HURT, damage, this.stateMachine.getState())
     }
   }
 
@@ -117,6 +124,9 @@ export class Mob {
 
   update() {
     this.stateMachine.step()
+    this.updateHooks.forEach((fn) => {
+      fn()
+    })
   }
 
   destroy() {

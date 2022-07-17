@@ -196,7 +196,7 @@ export default class Game extends Phaser.Scene {
       }
     })
     this.physics.add.collider(this.player.attackHitbox, this.mobGroup, (obj1, obj2) => {
-      if (!this.isMobCollided) {
+      if (!this.isMobCollided && obj2.active) {
         this.isMobCollided = true
         this.cameras.main.shake(200, 0.002)
         const mob = obj1.getData('ref') as Mob
