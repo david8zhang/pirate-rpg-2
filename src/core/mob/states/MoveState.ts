@@ -12,12 +12,12 @@ export class MoveState extends State {
   execute(mob: Mob) {
     const currTimestamp = Date.now()
     if (currTimestamp - this.lastTickTimestamp > 3000) {
-      const shouldIdle = Phaser.Math.Between(0, 1) == 2
+      const shouldIdle = Phaser.Math.Between(0, 1) == 0
       this.lastTickTimestamp = currTimestamp
       if (shouldIdle) {
         mob.stateMachine.transition(MobStates.IDLE)
       } else {
-        const directions = [Direction.UP]
+        const directions = [Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT]
         const randIndex = Phaser.Math.Between(0, directions.length - 1)
         const randDirection = directions[randIndex]
         mob.moveController.currDirection = randDirection

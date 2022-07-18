@@ -58,7 +58,7 @@
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 9,
+        "x": 10,
         "y": 12,
         "w": 13,
         "h": 20
@@ -322,7 +322,7 @@
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 10,
+        "x": 9,
         "y": 12,
         "w": 13,
         "h": 20
@@ -490,7 +490,7 @@
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 9,
+        "x": 10,
         "y": 13,
         "w": 13,
         "h": 19
@@ -562,7 +562,7 @@
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 10,
+        "x": 9,
         "y": 13,
         "w": 13,
         "h": 19
@@ -634,7 +634,7 @@
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 9,
+        "x": 10,
         "y": 13,
         "w": 13,
         "h": 19
@@ -778,7 +778,7 @@
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 10,
+        "x": 9,
         "y": 13,
         "w": 13,
         "h": 19
@@ -922,7 +922,7 @@
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 10,
+        "x": 9,
         "y": 14,
         "w": 13,
         "h": 18
@@ -1042,7 +1042,7 @@
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 9,
+        "x": 10,
         "y": 14,
         "w": 13,
         "h": 18
@@ -1060,7 +1060,7 @@
   "meta": {
     "app": "http://free-tex-packer.com",
     "version": "0.6.6",
-    "image": "texture.png",
+    "image": "base.png",
     "format": "RGBA8888",
     "size": {
       "w": 104,
